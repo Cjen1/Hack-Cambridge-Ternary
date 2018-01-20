@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.sophie.hello_world;
+package com.example.app.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
