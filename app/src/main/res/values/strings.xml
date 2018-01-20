@@ -5,7 +5,10 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_food_evaluator">Evaluator</string>
     <string name="title_food_diary">Food and Reaction Diary</string>
-    <string name="navigation_profile" >Profile</string>
+    <string name="navigation_profile">Profile</string>
     <string name="request_permission">This app needs your camera permission</string>
     <string name="camera_error">There was an error in loading the camera</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
