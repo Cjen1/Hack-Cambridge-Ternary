@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements DefiniteAllergenF
 private FoodDiaryFragment mDiaryFragment;
 private DefiniteAllergenFragmentFragment mDefiniteAllergenFragment;
 private FragmentManager mFragmentManager;
+private StupidTextureViewFragment mCameraFragment;
 
 private final static String TAG="sophie.hello_world";
 
@@ -31,6 +32,9 @@ public boolean onNavigationItemSelected(@NonNull MenuItem item){
         FragmentTransaction ft;
         switch(item.getItemId()){
             case R.id.navigation_food_evaluator:
+                ft = mFragmentManager.beginTransaction();
+                ft.replace(R.id.frame_layout, mCameraFragment);
+                ft.commit();
                 return true;
             case R.id.navigation_food_diary:
                 ft = mFragmentManager.beginTransaction();
@@ -79,7 +83,10 @@ protected void onCreate(Bundle savedInstanceState){
 
     Log.i(TAG, "onCreate: Creating definite allergen fragment");
         mDefiniteAllergenFragment = new DefiniteAllergenFragmentFragment();
+        mDefiniteAllergenFragment.setArguments(savedInstanceState);
 
+
+        mCameraFragment = new StupidTextureViewFragment();
 
         BottomNavigationView navigation=(BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
