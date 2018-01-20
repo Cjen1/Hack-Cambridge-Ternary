@@ -1,6 +1,8 @@
 package com.example.app.ocr;// This sample uses the Apache HTTP client library(org.apache.httpcomponents:httpclient:4.2.4)
 // and the org.json library (org.json:json:20170516).
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +11,9 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.AbstractHttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -52,7 +57,7 @@ public class OCRInterface
                 String word = s.substring(pos+7,end);
                 s = s.substring(end);
                 l.add(word);
-                System.out.println(word);
+                // TODO: System.out.println(word);
             } else {
                 break;
             }
@@ -65,7 +70,27 @@ public class OCRInterface
         return l;
     }
 
-    public static JSONObject analyse(String location) {
+
+    public static JSONObject analyseLocal(String imgUrl) {
+        File f = new File(imgUrl);
+        FileEntity fileEntity = new FileEntity(f, ContentType.APPLICATION_OCTET_STREAM);
+        JSONObject result = serverRequest(fileEntity,"application/octet-stream");
+        return result;
+    }
+
+    public static JSONObject analyseURL(String url) {
+        try {
+            StringEntity requestEntity =
+                    new StringEntity("{\"url\":\"" + url + "\"}");
+            JSONObject result = serverRequest(requestEntity, "application/json");
+            return result;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private static JSONObject serverRequest(AbstractHttpEntity fileEntity, String contentType) {
         HttpClient httpClient = new DefaultHttpClient();
 
         try
@@ -83,13 +108,11 @@ public class OCRInterface
             HttpPost request = new HttpPost(uri);
 
             // Request headers.
-            request.setHeader("Content-Type", "application/json");
+            request.setHeader("Content-Type", contentType);
             request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
 
             // Request body.
-            StringEntity requestEntity =
-                    new StringEntity("{\"url\":\"" + location + "\"}");
-            request.setEntity(requestEntity);
+            request.setEntity(fileEntity);
 
             // Execute the REST API call and get the response entity.
             HttpResponse response = httpClient.execute(request);
@@ -113,11 +136,9 @@ public class OCRInterface
             System.out.println(e.getMessage());
             return null;
         }
-    }
 
-    public static void main(String[] args) {
-        JSONObject o = analyse("https://nutrition.org/wp-content/uploads/2017/08/ucm501515.png");
-        List<String> words = getText(o);
+
 
     }
+
 }

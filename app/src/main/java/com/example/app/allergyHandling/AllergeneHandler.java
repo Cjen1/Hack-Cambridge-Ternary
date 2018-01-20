@@ -5,14 +5,31 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+/**
+ * AllergeneHandler.java
+ * Purpose: Act as a management instance for your detected allergies and helps detect them when given
+ * a list of ingredients.
+ *
+ * @author Jan Helmich
+ * @version 1.0 20/01/18
+ */
 public class AllergeneHandler {
     private List<String[]> allergenes; // The type is a list of {<allergene>; <description>} String arrays
-    private static String csvFile = "res/allergyInfo/allergenes.csv"; // TODO: Adjust accordingly to CSV file
+    private static String csvFile = "app/res/allergyInfo/allergenes.csv"; // TODO: Adjust accordingly to CSV file
+
 
     public AllergeneHandler() {
         allergenes = getAllergenesFromFile();
     }
 
+    /**
+     * Adds the given data to the dataset. If <name> is already registered, will overwrite the
+     * description.
+     *
+     * @param name The name or identifier of an allergy ingredient.
+     * @param description The description text for your given allergene.
+     * @return A boolean value whether or not the process was successfull.
+     */
     public boolean addAllergene(String name, String description) { // Use: Always put in the singular of the allergene
         try {
             name = name.toLowerCase();
@@ -47,6 +64,11 @@ public class AllergeneHandler {
 
     }
 
+    /**
+     *
+     * @param allergy Checks whether or not an allergy with that identifier exists
+     * @return boolean. True if allergy is found, false otherwise.
+     */
     public boolean containsAllergy(String allergy) {
         allergy = allergy.toLowerCase();
         for (String[] s : allergenes) {
@@ -58,10 +80,18 @@ public class AllergeneHandler {
 
     }
 
+    /**
+     *
+     * @return Returns the list of allergene information stored in the allergenes.csv file.
+     */
     public List<String[]> getAllergeneInfo() {
         return allergenes;
     }
 
+    /**
+     *
+     * @return Same as getAllergeneInfor() but only returns identifiers of the allergies
+     */
     public List<String> getAllergenes() {
         List<String> l = new LinkedList<>();
         for (String s[] : allergenes) {
@@ -70,6 +100,11 @@ public class AllergeneHandler {
         return l;
     }
 
+    /**
+     *
+     *
+     * @return Returns the content from the csv file.
+     */
     private List<String[]> getAllergenesFromFile() {
         List<String[]> l = new LinkedList<>();
 
@@ -100,10 +135,16 @@ public class AllergeneHandler {
         return l;
     }
 
+
     private void updateAllergenes() {
         allergenes = getAllergenesFromFile();
     }
 
+    /**
+     *
+     * @param allergy The name of the allergy information you want to remove
+     * @return True if sucessfull, false otherwise.
+     */
     public boolean removeAllergy(String allergy) {
 
         try {
@@ -155,4 +196,22 @@ public class AllergeneHandler {
             return false;
         }
     }
+
+    /**
+     *
+     * @param tokens List of allergy ingredients
+     * @return List of allergies that are known.
+     */
+    public List<String> allergicIngredients(List<String> tokens) {
+        List<String> ingredients = new LinkedList<>();
+        for (String token : tokens) {
+            if (containsAllergy(token)) {
+                ingredients.add(token);
+            }
+        }
+
+        return ingredients;
+    }
+
+
 }
