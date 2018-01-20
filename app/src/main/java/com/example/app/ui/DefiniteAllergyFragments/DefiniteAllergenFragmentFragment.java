@@ -4,16 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app.ui.R;
 import java.util.List;
-import com.example.app.ui.dummy.DummyContent;
-import com.example.app.ui.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
@@ -22,9 +20,11 @@ import com.example.app.ui.dummy.DummyContent.DummyItem;
  * interface.
  */
 public class DefiniteAllergenFragmentFragment extends Fragment {
+    
+    public final static String TAG="DefiniteAllergenFragmen";
 
     private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount = 2;
+    private static final int mColumnCount = 2;
     private DefiniteAllergenFragmentInteractionListner mListener;
 
     /**
@@ -43,24 +43,27 @@ public class DefiniteAllergenFragmentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Log.i(TAG, "onCreateView: Creating view");
         View view = inflater.inflate(R.layout.fragment_definiteallergenfragment_list, container, false);
 
-        List<String> definiteAllergens = savedInstanceState.getStringArrayList("definite_allergens");
+        Log.i(TAG, "onCreateView: Getting instance state arraylist");
+        List<String> definiteAllergens = getArguments().getStringArrayList("definite_allergens");
 
         // Set the adapter
+        Log.i(TAG, "onCreateView: Fiddling with view");
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+            GridLayoutManager g = new GridLayoutManager(context, mColumnCount);
+            recyclerView.setLayoutManager(g);
+
+            Log.i(TAG, "onCreateView: Setting adaptor");
             recyclerView.setAdapter(new MyDefiniteAllergenFragmentRecyclerViewAdapter(definiteAllergens, mListener));
         }
         return view;
