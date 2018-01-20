@@ -1,23 +1,21 @@
-package com.example.sophie.hello_world;
+package com.example.app.ui;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.app.Fragment;
 import android.view.ViewGroup;
 
+import com.example.app.ui.FoodDiaryFragment;
 
-public class MainActivity extends AppCompatActivity implements FooFragment.OnFragmentInteractionListener{
 
-private FooFragment mDiaryFragment;
+public class MainActivity extends AppCompatActivity implements FoodDiaryFragment.OnFragmentInteractionListener{
+
+private FoodDiaryFragment mDiaryFragment;
 private ViewGroup mView;
 private FragmentManager mFragmentManager;
 
@@ -54,7 +52,7 @@ protected void onCreate(Bundle savedInstanceState){
         setContentView(R.layout.activity_main);
 
         mFragmentManager = getFragmentManager();
-        mDiaryFragment = new FooFragment();
+        mDiaryFragment = new FoodDiaryFragment();
 
 
         BottomNavigationView navigation=(BottomNavigationView)findViewById(R.id.navigation);

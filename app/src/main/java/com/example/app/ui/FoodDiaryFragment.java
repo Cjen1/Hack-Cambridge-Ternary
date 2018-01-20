@@ -1,7 +1,6 @@
-package com.example.sophie.hello_world;
+package com.example.app.ui;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -11,25 +10,24 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleExpandableListAdapter;
+
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FooFragment.OnFragmentInteractionListener} interface
+ * {@link FoodDiaryFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FooFragment#newInstance} factory method to
+ * Use the {@link FoodDiaryFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FooFragment extends Fragment {
+public class FoodDiaryFragment extends Fragment {
 
     final String TAG = "";
     private OnFragmentInteractionListener mListener;
     private ListView mList;
-    public FooFragment() {
+    public FoodDiaryFragment() {
         // Required empty public constructor
     }
 
@@ -37,10 +35,10 @@ public class FooFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment FooFragment.
+     * @return A new instance of fragment FoodDiaryFragment.
      */
-    public static FooFragment newInstance() {
-        FooFragment fragment = new FooFragment();
+    public static FoodDiaryFragment newInstance() {
+        FoodDiaryFragment fragment = new FoodDiaryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -57,7 +55,7 @@ public class FooFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.i(TAG, "onCreateView: Creating view");
-        View view = inflater.inflate(R.layout.fragment_foo, container, false);
+        View view = inflater.inflate(R.layout.fragment_food_diary, container, false);
 
         Log.i(TAG, "getting list");
         mList = (ListView)view.findViewById(R.id.list);
