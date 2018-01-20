@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.sophie.hello_world;
+package com.example.app.ui;
 
 import android.Manifest;
 import android.app.Activity;
@@ -58,6 +58,8 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.example.sophie.hello_world.R;
 
 import java.io.File;
 import java.io.FileOutputStream;
