@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class EatEvent extends Event{
     public List<String> ingredients;
-    public EatEvent(Instant Time){
+    public EatEvent(long Time){
         this.type = EventType.EAT;
         this.time = Time;
     }
 
-    public EatEvent(Instant Time, List<String> ingredients){
+    public EatEvent(long Time, List<String> ingredients){
         this.ingredients = ingredients;
         this.time = Time;
     }

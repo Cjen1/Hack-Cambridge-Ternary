@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-/*
+
 public class History {
     public LinkedList<Event> events;
     public Map<String, Double> allergenMap;
@@ -40,7 +40,7 @@ public class History {
                 for(int j = 0; j < i; j++) {
                     Event previous = events.get(j);
                     if (previous.type == EventType.EAT) {
-                        if (Duration.between(previous.time, event.time).toHours() < 12) {
+                        if (hoursBetween(previous.time, event.time) < 12) {
                             for (String food : ((EatEvent) event).ingredients) {
                                 Double value = workingAllergenMap.get(food);
                                 if (workingAllergenMap.get(food) != 0.5)
@@ -48,13 +48,14 @@ public class History {
                             }
                         }
 
-                        long timeDiff = Duration.between(previous.time, event.time).toMinutes();
+                        double timeDiff = minutesBetween(previous.time, event.time);
 
                         double reactionProb = normal.probability(timeDiff - 30, timeDiff + 30);
 
                         double normalising = 0.1;//may need to change.. :)
                         for(String food : ((EatEvent)event).ingredients){
-                            workingAllergenMap.put(food, clamp(reactionProb * workingAllergenMap.getOrDefault(food, 0.5) / normalising));
+                            double prob = workingAllergenMap.containsKey(food) ? workingAllergenMap.get(food) : 0.5;
+                            workingAllergenMap.put(food, clamp(reactionProb * prob / normalising));
                         }
                     }
                 }
@@ -63,4 +64,12 @@ public class History {
 
         return workingAllergenMap;
     }
-}*/
+
+    private double hoursBetween(long A, long B){
+        return Math.abs(A - B) / (3600.0 * 1000);
+    }
+
+    private double minutesBetween(long A, long B){
+        return Math.abs(A - B) / (60.0 * 1000);
+    }
+}
