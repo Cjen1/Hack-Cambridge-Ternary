@@ -21,7 +21,7 @@ private FragmentManager mFragmentManager;
 
 private final static String TAG="sophie.hello_world";
 
-private static List<String> definiteAllergens;
+private List<String> definiteAllergens;
 
 private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
         =new BottomNavigationView.OnNavigationItemSelectedListener(){
@@ -58,12 +58,18 @@ protected void onCreate(Bundle savedInstanceState){
     Log.i(TAG, "onCreate: Started app");
 
         super.onCreate(savedInstanceState);
+
+    Log.i(TAG, "onCreate: Initialised super");
         setContentView(R.layout.activity_main);
 
         definiteAllergens = new ArrayList<String>();
         definiteAllergens.add("food");
         definiteAllergens.add("baz");
 
+    Log.i(TAG, "onCreate: Created allergy list");
+
+    if (savedInstanceState == null)
+        savedInstanceState = new Bundle();
         savedInstanceState.putStringArrayList("definite_allergens", new ArrayList(definiteAllergens));
 
         mFragmentManager = getFragmentManager();
