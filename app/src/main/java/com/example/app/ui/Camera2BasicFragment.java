@@ -59,8 +59,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.sophie.hello_world.R;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

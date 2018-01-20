@@ -1,46 +1,46 @@
-package com.example.sophie.hello_world;
+package com.example.app.ui;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.app.Fragment;
-import android.view.ViewGroup;
+import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenFragmentFragment;
+import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenFragmentFragment.DefiniteAllergenFragmentInteractionListner;
+import java.util.List;
+import java.util.ArrayList;
 
+public class MainActivity extends AppCompatActivity implements DefiniteAllergenFragmentInteractionListner{
 
-public class MainActivity extends AppCompatActivity implements FooFragment.OnFragmentInteractionListener{
-
-private FooFragment mDiaryFragment;
-private ViewGroup mView;
+private FoodDiaryFragment mDiaryFragment;
+private DefiniteAllergenFragmentFragment mDefiniteAllergenFragment;
 private FragmentManager mFragmentManager;
 
 private final static String TAG="sophie.hello_world";
+
+private static List<String> definiteAllergens;
 
 private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
         =new BottomNavigationView.OnNavigationItemSelectedListener(){
 
 @Override
 public boolean onNavigationItemSelected(@NonNull MenuItem item){
+        FragmentTransaction ft;
         switch(item.getItemId()){
             case R.id.navigation_food_evaluator:
                 return true;
             case R.id.navigation_food_diary:
-                Log.i(TAG, "onNavigationItemSelected: beginning transaction");
-                FragmentTransaction ft = mFragmentManager.beginTransaction();
-                Log.i(TAG, "onNavigationItemSelected: begun transaction");
+                ft = mFragmentManager.beginTransaction();
                 ft.replace(R.id.frame_layout, mDiaryFragment);
-                Log.i(TAG, "onNavigationItemSelected: Committing tracsaction");
                 ft.commit();
-                Log.i(TAG, "onNavigationItemSelected: Committed transaction");
                 return true;
             case R.id.navigation_profile:
+                ft = mFragmentManager.beginTransaction();
+                ft.replace(R.id.frame_layout, mDefiniteAllergenFragment);
+                ft.commit();
                 return true;
             }
         return false;
@@ -48,13 +48,31 @@ public boolean onNavigationItemSelected(@NonNull MenuItem item){
         };
 
 @Override
+public void onDeleteButtonClick(int position) {
+    definiteAllergens.remove(position);
+}
+
+@Override
 protected void onCreate(Bundle savedInstanceState){
+
+    Log.i(TAG, "onCreate: Started app");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        definiteAllergens = new ArrayList<String>();
+        definiteAllergens.add("food");
+        definiteAllergens.add("baz");
+
+        savedInstanceState.putStringArrayList("definite_allergens", new ArrayList(definiteAllergens));
+
         mFragmentManager = getFragmentManager();
-        mDiaryFragment = new FooFragment();
+
+    Log.i(TAG, "onCreate: Creating food diary fragment");
+        mDiaryFragment = new FoodDiaryFragment();
+
+    Log.i(TAG, "onCreate: Creating definite allergen fragment");
+        mDefiniteAllergenFragment = new DefiniteAllergenFragmentFragment();
 
 
         BottomNavigationView navigation=(BottomNavigationView)findViewById(R.id.navigation);
