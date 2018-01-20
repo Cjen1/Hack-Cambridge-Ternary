@@ -42,7 +42,11 @@ public class OCRInterface
     // uriBuilder.setParameter to use the Celebrities model.
     public static final String uriBase = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/ocr";
 
-
+    /**
+     *
+     * @param o JSON Object that contains all the data.
+     * @return All text information retrieved by the OCR.
+     */
     public static List<String> getText(JSONObject o) {
         System.out.println(o.toString());
         List<String> l = new LinkedList<>();
@@ -70,7 +74,11 @@ public class OCRInterface
         return l;
     }
 
-
+    /**
+     *
+     * @param imgUrl Local URL to the image that is to be used.
+     * @return JSON Object containing the full information retrieved from the image.
+     */
     public static JSONObject analyseLocal(String imgUrl) {
         File f = new File(imgUrl);
         FileEntity fileEntity = new FileEntity(f, ContentType.APPLICATION_OCTET_STREAM);
@@ -78,6 +86,22 @@ public class OCRInterface
         return result;
     }
 
+    /**
+     *
+     * @param f Image File that is to be analyzed.
+     * @return JSON Object containing the full information retrieved from the image.
+     */
+    public static JSONObject analyseLocal(File f) {
+        FileEntity fileEntity = new FileEntity(f, ContentType.APPLICATION_OCTET_STREAM);
+        JSONObject result = serverRequest(fileEntity,"application/octet-stream");
+        return result;
+    }
+
+    /**
+     *
+     * @param url URL of a web based image that is to be analyzed.
+     * @return JSON Object containing the full information retrieved from the image.
+     */
     public static JSONObject analyseURL(String url) {
         try {
             StringEntity requestEntity =
