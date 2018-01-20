@@ -25,7 +25,6 @@ import java.util.ArrayList;
 public class FoodDiaryFragment extends Fragment {
 
     final String TAG = "";
-    private OnFragmentInteractionListener mListener;
     private ListView mList;
     public FoodDiaryFragment() {
         // Required empty public constructor
@@ -54,13 +53,10 @@ public class FoodDiaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i(TAG, "onCreateView: Creating view");
         View view = inflater.inflate(R.layout.fragment_food_diary, container, false);
 
-        Log.i(TAG, "getting list");
         mList = (ListView)view.findViewById(R.id.list);
 
-        Log.i(TAG, "onCreateView: Adding foo");
         ArrayList<String> l = new ArrayList<String>();
         l.add("foo");
         l.add("bar");
@@ -78,31 +74,11 @@ public class FoodDiaryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-
-    }
 }
