@@ -6,8 +6,36 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <TextureView
-        android:id="@+id/CameraPreviewTextureView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextureView
+            android:id="@+id/CameraPreviewTextureView"
+            android:layout_width="match_parent"
+            android:layout_height="392dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/evaluate_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="evaluate" />
+
+            <Button
+                android:id="@+id/eat_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Eat Food" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </FrameLayout>
