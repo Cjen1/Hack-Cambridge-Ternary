@@ -3,7 +3,7 @@ package com.example.app.ui.DefiniteAllergyFragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,32 +11,34 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.app.ui.R;
+
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link DefiniteAllergenFragmentInteractionListner}
+ * Activities containing this fragment MUST implement the {@link DefiniteAllergenFragmentInteractionListener}
  * interface.
  */
-public class DefiniteAllergenFragmentFragment extends Fragment {
-    
+public class DefiniteAllergenListFragment extends Fragment {
+
     public final static String TAG="DefiniteAllergenFragmen";
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final int mColumnCount = 2;
-    private DefiniteAllergenFragmentInteractionListner mListener;
+    private DefiniteAllergenFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public DefiniteAllergenFragmentFragment() {
+    public DefiniteAllergenListFragment() {
+
     }
 
     @SuppressWarnings("unused")
-    public static DefiniteAllergenFragmentFragment newInstance() {
-        DefiniteAllergenFragmentFragment fragment = new DefiniteAllergenFragmentFragment();
+    public static DefiniteAllergenListFragment newInstance() {
+        DefiniteAllergenListFragment fragment = new DefiniteAllergenListFragment();
+
         return fragment;
     }
 
@@ -53,18 +55,16 @@ public class DefiniteAllergenFragmentFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_definiteallergenfragment_list, container, false);
 
         Log.i(TAG, "onCreateView: Getting instance state arraylist");
-        List<String> definiteAllergens = getArguments().getStringArrayList("definite_allergens");
 
         // Set the adapter
-        Log.i(TAG, "onCreateView: Fiddling with view");
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            GridLayoutManager g = new GridLayoutManager(context, mColumnCount);
+            LinearLayoutManager g = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(g);
 
-            Log.i(TAG, "onCreateView: Setting adaptor");
-            recyclerView.setAdapter(new MyDefiniteAllergenFragmentRecyclerViewAdapter(definiteAllergens, mListener));
+            String[] fooArray = {"foo","bar","bat","baz"};
+            recyclerView.setAdapter(new MyDefiniteAllergenFragmentRecyclerViewAdapter( mListener, Arrays.asList(fooArray)));
         }
         return view;
     }
@@ -73,8 +73,8 @@ public class DefiniteAllergenFragmentFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof DefiniteAllergenFragmentInteractionListner) {
-            mListener = (DefiniteAllergenFragmentInteractionListner) context;
+        if (context instanceof DefiniteAllergenFragmentInteractionListener) {
+            mListener = (DefiniteAllergenFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -97,7 +97,7 @@ public class DefiniteAllergenFragmentFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface DefiniteAllergenFragmentInteractionListner {
+    public interface DefiniteAllergenFragmentInteractionListener {
         void onDeleteButtonClick(final int listPosition);
     }
 }

@@ -3,13 +3,18 @@ package com.example.app.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import com.example.app.ui.DefiniteAllergyFragments.MyDefiniteAllergenFragmentRecyclerViewAdapter;
 
 import java.util.ArrayList;
 
@@ -25,7 +30,7 @@ import java.util.ArrayList;
 public class FoodDiaryFragment extends Fragment {
 
     final String TAG = "";
-    private ListView mList;
+    private RecyclerView mList;
     public FoodDiaryFragment() {
         // Required empty public constructor
     }
@@ -55,7 +60,7 @@ public class FoodDiaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_food_diary, container, false);
 
-        mList = (ListView)view.findViewById(R.id.list);
+        mList = (RecyclerView) view.findViewById(R.id.list);
 
         ArrayList<String> l = new ArrayList<String>();
         l.add("foo");
@@ -63,7 +68,14 @@ public class FoodDiaryFragment extends Fragment {
 
 
         Log.i(TAG, "onCreateView: Adding adapter");
-        ListAdapter adapter = new ArrayAdapter<String>(container.getContext(), R.layout.simplerow, l);
+
+        Context context = view.getContext();
+        LinearLayoutManager g = new LinearLayoutManager(context);
+        mList.setLayoutManager(g);
+        MyDefiniteAllergenFragmentRecyclerViewAdapter adapter = new MyDefiniteAllergenFragmentRecyclerViewAdapter(null, l);
+
+
+
         mList.setAdapter(adapter);
 
         Log.i(TAG, "onCreateView: done");

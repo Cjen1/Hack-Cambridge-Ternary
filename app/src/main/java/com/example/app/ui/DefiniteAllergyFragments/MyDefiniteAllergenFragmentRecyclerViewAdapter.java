@@ -7,22 +7,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Button;
 
-import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenFragmentFragment.DefiniteAllergenFragmentInteractionListner;
+import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment.DefiniteAllergenFragmentInteractionListener;
 import com.example.app.ui.R;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a String and makes a call to the
- * specified {@link DefiniteAllergenFragmentInteractionListner}.
+ * specified {@link DefiniteAllergenFragmentInteractionListener}.
  */
 public class MyDefiniteAllergenFragmentRecyclerViewAdapter extends RecyclerView.Adapter<MyDefiniteAllergenFragmentRecyclerViewAdapter.ViewHolder> {
 
-    private final List<String> mValues;
-    private final DefiniteAllergenFragmentInteractionListner mListener;
+    private List<String> mValues;
+    private final DefiniteAllergenFragmentInteractionListener mListener;
 
-    public MyDefiniteAllergenFragmentRecyclerViewAdapter(List<String> items, DefiniteAllergenFragmentInteractionListner listener) {
-        mValues = items;
+    public MyDefiniteAllergenFragmentRecyclerViewAdapter(DefiniteAllergenFragmentInteractionListener listener, List<String> values) {
+        mValues = values;
         mListener = listener;
     }
 
@@ -43,7 +43,9 @@ public class MyDefiniteAllergenFragmentRecyclerViewAdapter extends RecyclerView.
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onDeleteButtonClick(position);
+                    //mListener.onDeleteButtonClick(position);
+
+                    mValues.remove(position);
                 }
             }
         });

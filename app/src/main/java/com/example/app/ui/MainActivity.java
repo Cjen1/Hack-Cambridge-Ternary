@@ -8,17 +8,16 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenFragmentFragment;
-import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenFragmentFragment.DefiniteAllergenFragmentInteractionListner;
+import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment.DefiniteAllergenFragmentInteractionListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements DefiniteAllergenFragmentInteractionListner{
+public class MainActivity extends AppCompatActivity implements DefiniteAllergenFragmentInteractionListener{
 
 private FoodDiaryFragment mDiaryFragment;
-private DefiniteAllergenFragmentFragment mDefiniteAllergenFragment;
 private FragmentManager mFragmentManager;
 private StupidTextureViewFragment mCameraFragment;
+private CombinedAllergenDisplayFragment mCombinedAllergenFragment;
 
 private final static String TAG="sophie.hello_world";
 
@@ -43,7 +42,7 @@ public boolean onNavigationItemSelected(@NonNull MenuItem item){
                 return true;
             case R.id.navigation_profile:
                 ft = mFragmentManager.beginTransaction();
-                ft.replace(R.id.frame_layout, mDefiniteAllergenFragment);
+                ft.replace(R.id.frame_layout, mCombinedAllergenFragment);
                 ft.commit();
                 return true;
             }
@@ -80,13 +79,8 @@ protected void onCreate(Bundle savedInstanceState){
 
     Log.i(TAG, "onCreate: Creating food diary fragment");
         mDiaryFragment = new FoodDiaryFragment();
-
-    Log.i(TAG, "onCreate: Creating definite allergen fragment");
-        mDefiniteAllergenFragment = new DefiniteAllergenFragmentFragment();
-        mDefiniteAllergenFragment.setArguments(savedInstanceState);
-
-
         mCameraFragment = new StupidTextureViewFragment();
+        mCombinedAllergenFragment = new CombinedAllergenDisplayFragment();
 
         BottomNavigationView navigation=(BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
