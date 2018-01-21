@@ -64,18 +64,7 @@ public class MainActivity extends AppCompatActivity implements SuggestedAllergen
 
         setContentView(R.layout.activity_main);
 
-        String[] foodDiary = {"cheese", "eggs", "biscuits"};
-        String[] definiteAllergens = {"oranges", "pineapple", "chocolate"};
-
-        ArrayList<String> foodDiaryAL = new ArrayList<>(Arrays.asList(foodDiary));
-        ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
-        ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
-        suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
-        suggestedAllergensAL.add(new SuggestedAllergen("cheese", 0.75));
-
-        TestArrays.mFoodDiaryArray = foodDiaryAL;
-        TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
-        TestArrays.mSuggestedAllergenArray = suggestedAllergensAL;
+        TestArrays.generateTestData();
 
         DataCentre.updateDefinite();
         DataCentre.updateSuggested();
@@ -92,15 +81,7 @@ public class MainActivity extends AppCompatActivity implements SuggestedAllergen
 
     @Override
     public void onSuggestedAllergenAddRequest(String allergen) {
-
         DataCentre.mDefiniteAllergenArray.add(allergen);
-        while (TestArrays.mSuggestedAllergenArray.iterator().hasNext()) {
-            SuggestedAllergen item = TestArrays.mSuggestedAllergenArray.iterator().next();
-            if (item.allergen.equals(allergen)) {
-                TestArrays.mSuggestedAllergenArray.remove(item);
-            }
-        }
-
         refreshCombinedAllergenFragment();
     }
 

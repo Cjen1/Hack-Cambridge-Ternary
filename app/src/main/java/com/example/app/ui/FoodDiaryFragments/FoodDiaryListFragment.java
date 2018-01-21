@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.DataCentre;
 import com.example.app.test_arrays.TestArrays;
 import com.example.app.ui.R;
 
@@ -60,8 +61,8 @@ public class FoodDiaryListFragment extends Fragment {
         Context context = view.getContext();
         LinearLayoutManager g = new LinearLayoutManager(context);
         mList.setLayoutManager(g);
-        FoodDiaryListItemsFragment adapter = new FoodDiaryListItemsFragment(TestArrays.mFoodDiaryArray);
-        mList.setAdapter(adapter);
+//        FoodDiaryListItemsFragment adapter = new FoodDiaryListItemsFragment(DataCentre.mFoodDiaryArray);
+//        mList.setAdapter(adapter);
 
         return view;
     }
