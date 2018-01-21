@@ -31,6 +31,14 @@ public class DefiniteAllergenListItemsFragment extends RecyclerView.Adapter<Defi
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_definite_allergens_list_item, parent, false);
 
+        Button deleteButton = (Button)view.findViewById(R.id.delete_button);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         return new ViewHolder(view);
     }
 
