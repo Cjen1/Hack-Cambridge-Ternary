@@ -6,8 +6,6 @@ import com.example.app.DataCentre;
 import com.example.app.allergic.EatEvent;
 import com.example.app.ocr.OCRInterface;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 /**
