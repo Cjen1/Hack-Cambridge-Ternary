@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.app.DataCentre;
 import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
 import com.example.app.ui.FoodDiaryFragments.FoodDiaryListFragment;
 
@@ -21,76 +22,78 @@ import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergenFragment;
 
 public class MainActivity extends AppCompatActivity implements SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListener, DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener{
 
-private FoodDiaryListFragment mDiaryFragment;
-private FragmentManager mFragmentManager;
-private StupidTextureViewFragment mCameraFragment;
-private CombinedAllergenDisplayFragment mCombinedAllergenFragment;
+    private FoodDiaryListFragment mDiaryFragment;
+    private FragmentManager mFragmentManager;
+    private StupidTextureViewFragment mCameraFragment;
+    private CombinedAllergenDisplayFragment mCombinedAllergenFragment;
 
-private final static String TAG="sophie.hello_world";
+    private final static String TAG="sophie.hello_world";
 
-private List<String> definiteAllergens;
 
-private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
         =new BottomNavigationView.OnNavigationItemSelectedListener(){
 
-@Override
-public boolean onNavigationItemSelected(@NonNull MenuItem item){
-        FragmentTransaction ft;
-        switch(item.getItemId()){
-            case R.id.navigation_food_evaluator:
-                ft = mFragmentManager.beginTransaction();
-                ft.replace(R.id.frame_layout, mCameraFragment);
-                ft.commit();
-                return true;
-            case R.id.navigation_food_diary:
-                ft = mFragmentManager.beginTransaction();
-                ft.replace(R.id.frame_layout, mDiaryFragment);
-                ft.commit();
-                return true;
-            case R.id.navigation_profile:
-                ft = mFragmentManager.beginTransaction();
-                ft.replace(R.id.frame_layout, mCombinedAllergenFragment);
-                ft.commit();
-                Log.i(TAG, "onNavigationItemSelected: Finished wrangling navigation profile");
-                return true;
-            }
-        return false;
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item){
+            FragmentTransaction ft;
+            switch(item.getItemId()){
+                case R.id.navigation_food_evaluator:
+                    ft = mFragmentManager.beginTransaction();
+                    ft.replace(R.id.frame_layout, mCameraFragment);
+                    ft.commit();
+                    return true;
+                case R.id.navigation_food_diary:
+                    ft = mFragmentManager.beginTransaction();
+                    ft.replace(R.id.frame_layout, mDiaryFragment);
+                    ft.commit();
+                    return true;
+                case R.id.navigation_profile:
+                    ft = mFragmentManager.beginTransaction();
+                    ft.replace(R.id.frame_layout, mCombinedAllergenFragment);
+                    ft.commit();
+                    Log.i(TAG, "onNavigationItemSelected: Finished wrangling navigation profile");
+                    return true;
+                }
+            return false;
         }
-        };
+    };
 
-@Override
-protected void onCreate(Bundle savedInstanceState){
-    super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
-    String[] foodDiary = {"cheese", "eggs", "biscuits"};
-    String[] definiteAllergens = {"oranges", "pineapple", "chocolate"};
+        String[] foodDiary = {"cheese", "eggs", "biscuits"};
+        String[] definiteAllergens = {"oranges", "pineapple", "chocolate"};
 
-    ArrayList<String> foodDiaryAL = new ArrayList<>(Arrays.asList(foodDiary));
-    ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
-    ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
-    suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
-    suggestedAllergensAL.add(new SuggestedAllergen("cheese", 0.75));
+        ArrayList<String> foodDiaryAL = new ArrayList<>(Arrays.asList(foodDiary));
+        ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
+        ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
+        suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
+        suggestedAllergensAL.add(new SuggestedAllergen("cheese", 0.75));
 
-    TestArrays.mFoodDiaryArray = foodDiaryAL;
-    TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
-    TestArrays.mSuggestedAllergenArray = suggestedAllergensAL;
+        TestArrays.mFoodDiaryArray = foodDiaryAL;
+        TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
+        TestArrays.mSuggestedAllergenArray = suggestedAllergensAL;
 
-    mFragmentManager = getFragmentManager();
-    mDiaryFragment = new FoodDiaryListFragment();
-    mCameraFragment = new StupidTextureViewFragment();
-    mCombinedAllergenFragment = new CombinedAllergenDisplayFragment();
+        DataCentre.updateDefinite();
+        DataCentre.updateSuggested();
 
-    BottomNavigationView navigation= findViewById(R.id.navigation);
-    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mFragmentManager = getFragmentManager();
+        mDiaryFragment = new FoodDiaryListFragment();
+        mCameraFragment = new StupidTextureViewFragment();
+        mCombinedAllergenFragment = new CombinedAllergenDisplayFragment();
+
+        BottomNavigationView navigation= findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
 
     @Override
     public void onSuggestedAllergenAddRequest(String allergen) {
 
-        TestArrays.mDefiniteAllergenArray.add(allergen);
+        DataCentre.mDefiniteAllergenArray.add(allergen);
         while (TestArrays.mSuggestedAllergenArray.iterator().hasNext()) {
             SuggestedAllergen item = TestArrays.mSuggestedAllergenArray.iterator().next();
             if (item.allergen.equals(allergen)) {
@@ -99,25 +102,24 @@ protected void onCreate(Bundle savedInstanceState){
         }
 
         refreshCombinedAllergenFragment();
-
-
     }
 
     @Override
     public void onSuggestedAllergenDeleteRequest(int position) {
-        TestArrays.mSuggestedAllergenArray.remove(position);
+        DataCentre.mSuggestedAllergenArray.remove(position);
         refreshCombinedAllergenFragment();
     }
 
     @Override
     public void onDefiniteAllergenDelete(int position) {
-        TestArrays.mDefiniteAllergenArray.remove(position);
+        DataCentre.mDefiniteAllergenArray.remove(position);
         refreshCombinedAllergenFragment();
     }
 
     @Override
     public void onDefiniteAllergenAdd(String allergen) {
-    //pass
+        DataCentre.mDefiniteAllergenArray.add(allergen);
+        refreshCombinedAllergenFragment();
     }
 
     private void refreshCombinedAllergenFragment() {
