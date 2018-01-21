@@ -137,10 +137,12 @@ private List<String> definiteAllergens;
         ft.commit();
     }
 
+    @Override
     public void addEventToDiary(Event e) {
     //pass
     }
 
+    @Override
     public void removeEventFromDiary(int position) {
         DataCentre.remove(DataCentre.history.events.get(position));
     }
