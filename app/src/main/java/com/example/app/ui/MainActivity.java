@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.app.DataCentre;
+import com.example.app.allergic.Event;
 import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
 import com.example.app.ui.FoodDiaryFragments.FoodDiaryListFragment;
 
@@ -20,7 +21,10 @@ import com.example.app.test_arrays.TestArrays;
 import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergen;
 import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergenFragment;
 
-public class MainActivity extends AppCompatActivity implements SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListener, DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener{
+public class MainActivity extends AppCompatActivity implements
+        SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListener,
+        DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener,
+        FoodDiaryListFragment.FoodDiaryListener {
 
     private FoodDiaryListFragment mDiaryFragment;
     private FragmentManager mFragmentManager;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements SuggestedAllergen
 
     private final static String TAG="sophie.hello_world";
 
+private List<String> definiteAllergens;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
         =new BottomNavigationView.OnNavigationItemSelectedListener(){
@@ -64,18 +69,7 @@ public class MainActivity extends AppCompatActivity implements SuggestedAllergen
 
         setContentView(R.layout.activity_main);
 
-        String[] foodDiary = {"cheese", "eggs", "biscuits"};
-        String[] definiteAllergens = {"oranges", "pineapple", "chocolate"};
-
-        ArrayList<String> foodDiaryAL = new ArrayList<>(Arrays.asList(foodDiary));
-        ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
-        ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
-        suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
-        suggestedAllergensAL.add(new SuggestedAllergen("cheese", 0.75));
-
-        TestArrays.mFoodDiaryArray = foodDiaryAL;
-        TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
-        TestArrays.mSuggestedAllergenArray = suggestedAllergensAL;
+        TestArrays.generateTestData();
 
         DataCentre.updateDefinite();
         DataCentre.updateSuggested();
@@ -91,16 +85,10 @@ public class MainActivity extends AppCompatActivity implements SuggestedAllergen
     }
 
     @Override
-    public void onSuggestedAllergenAddRequest(String allergen) {
-
+    public void onSuggestedAllergenAddRequest(String allergen, int position) {
         DataCentre.mDefiniteAllergenArray.add(allergen);
-        while (TestArrays.mSuggestedAllergenArray.iterator().hasNext()) {
-            SuggestedAllergen item = TestArrays.mSuggestedAllergenArray.iterator().next();
-            if (item.allergen.equals(allergen)) {
-                TestArrays.mSuggestedAllergenArray.remove(item);
-            }
-        }
-
+        DataCentre.mSuggestedAllergenArray.remove(position);
+        DataCentre.history.updateAllergenMap();
         refreshCombinedAllergenFragment();
     }
 
@@ -130,6 +118,30 @@ public class MainActivity extends AppCompatActivity implements SuggestedAllergen
         ft.replace(R.id.frame_layout, combined);
 
         ft.commit();
+    }
+
+    private void refreshFoodDiaryFragment() {
+        FoodDiaryListFragment fd = new FoodDiaryListFragment();
+        mDiaryFragment = fd;
+
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+        ft.replace(R.id.frame_layout, fd);
+        ft.commit();
+    }
+
+    @Override
+    public void addEventToDiary(Event e) {
+
+        DataCentre.history.events.add(e);
+        DataCentre.history.updateAllergenMap();
+        refreshFoodDiaryFragment();
+    }
+
+    @Override
+    public void removeEventFromDiary(int position) {
+        DataCentre.remove(DataCentre.history.events.get(position));
+        DataCentre.history.updateAllergenMap();
+        refreshFoodDiaryFragment();
     }
 
 }

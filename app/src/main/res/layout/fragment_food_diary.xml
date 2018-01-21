@@ -5,6 +5,7 @@
     tools:context="com.example.app.ui.FoodDiaryFragments.FoodDiaryListFragment">
 
     <LinearLayout
+        android:id="@+id/foodDiaryRootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -15,16 +16,10 @@
             android:layout_height="398dp" />
 
         <LinearLayout
+            android:id="@+id/foodDiarySecondaryLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/add_food"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Add food" />
 
             <Button
                 android:id="@+id/add_reaction"
