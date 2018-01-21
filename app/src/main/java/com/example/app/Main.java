@@ -31,7 +31,7 @@ public class Main {
             System.out.println("ALERT: " + s + " found in the food.");
         }
 
-
+        /*
         o = OCRInterface.analyseURL("http://4.bp.blogspot.com/-OI60LUigHek/Udzb-6fgmzI/AAAAAAAAACE/GiK0zWgOgqo/s1600/cheetos-nutrition.JPG");
 
         tokens = OCRInterface.getText(o);
@@ -42,7 +42,7 @@ public class Main {
         found = ah.allergicIngredients(tokens);
         for (String s : found) {
             System.out.println("ALERT: " + s + " found in the food.");
-        }
+        }*/
     }
 
 }
