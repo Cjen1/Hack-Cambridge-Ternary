@@ -37,8 +37,8 @@ public class DataCentre {
     public static List<SuggestedAllergen> mSuggestedAllergenArray;
     public static List<String> mDefiniteAllergenArray = new ArrayList<>();
 
-    public abstract class Listener {
-        public abstract void callback();
+    public abstract static class saveListener {
+        public abstract void callback(String filepath);
     };
 
     public static void updateDefinite(){
@@ -46,6 +46,7 @@ public class DataCentre {
     }
 
     public static void updateSuggested(){
+        history.updateAllergenMap();
         List<SuggestedAllergen> suggestedAllergens = new ArrayList<>();
         for(Map.Entry<String, Double> e : history.allergenMap.entrySet()){
             if(!mDefiniteAllergenArray.contains(e.getKey()))

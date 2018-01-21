@@ -12,6 +12,7 @@ public class EatEvent extends Event{
     }
 
     public EatEvent(long Time, List<String> ingredients){
+        this.type = EventType.EAT;
         this.ingredients = ingredients;
         this.time = Time;
     }
