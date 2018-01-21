@@ -1,27 +1,27 @@
 package com.example.app.ocr;// This sample uses the Apache HTTP client library(org.apache.httpcomponents:httpclient:4.2.4)
 // and the org.json library (org.json:json:20170516).
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
+import java.nio.ByteBuffer;
+import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.AbstractHttpEntity;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.FileEntity;
-import org.apache.http.entity.StringEntity;
+
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-public class OCRInterface
-{
+public class OCRInterface {
     // **********************************************
     // *** Update or verify the following values. ***
     // **********************************************
@@ -53,15 +53,14 @@ public class OCRInterface
             pos = s.indexOf("text");
 
             if (pos >= 0) {
-                end = s.indexOf('"',pos+7);
-                String word = s.substring(pos+7,end);
+                end = s.indexOf('"', pos + 7);
+                String word = s.substring(pos + 7, end);
                 s = s.substring(end);
                 l.add(word);
                 // TODO: System.out.println(word);
             } else {
                 break;
             }
-
 
 
         }
@@ -73,25 +72,24 @@ public class OCRInterface
 
     public static JSONObject analyseLocal(String imgUrl) {
         File f = new File(imgUrl);
-        FileEntity fileEntity = new FileEntity(f, ContentType.APPLICATION_OCTET_STREAM);
-        JSONObject result = serverRequest(fileEntity,"application/octet-stream");
+        JSONObject result = serverRequest(f, "application/octet-stream");
         return result;
     }
 
     public static List<String> analyseLocalToText(String imgUrl) {
         File f = new File(imgUrl);
-        FileEntity fileEntity = new FileEntity(f, ContentType.APPLICATION_OCTET_STREAM);
-        JSONObject result = serverRequest(fileEntity,"application/octet-stream");
+        JSONObject result = serverRequest(f, "application/octet-stream");
         List<String> l = getText(result);
 
         return l;
     }
 
+    /*
     public static JSONObject analyseURL(String url) {
         try {
-            StringEntity requestEntity =
-                    new StringEntity("{\"url\":\"" + url + "\"}");
-            JSONObject result = serverRequest(requestEntity, "application/json");
+            String s = "{\"url\":\"" + url + "\"}";
+            File f = URL
+            JSONObject result = serverRequest(, "application/json");
             return result;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -99,53 +97,53 @@ public class OCRInterface
         }
     }
 
-    private static JSONObject serverRequest(AbstractHttpEntity fileEntity, String contentType) {
-        HttpClient httpClient = new DefaultHttpClient();
+    */
 
-        try
-        {
+    private static JSONObject serverRequest(File f, String contentType) {
+        try {
             // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
             //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
             //   URL below with "westus".
             URIBuilder uriBuilder = new URIBuilder(uriBase);
-
             uriBuilder.setParameter("language", "unk");
             uriBuilder.setParameter("detectOrientation ", "true");
 
-            // Request parameters.
-            URI uri = uriBuilder.build();
-            HttpPost request = new HttpPost(uri);
+            URL url = uriBuilder.build().toURL();
 
-            // Request headers.
-            request.setHeader("Content-Type", contentType);
-            request.setHeader("Ocp-Apim-Subscription-Key", subscriptionKey);
+            HttpURLConnection cn = (HttpURLConnection) url.openConnection();
+            cn.setDoOutput(true);
+            cn.setRequestProperty("contentType", "application/octet-stream");
+            OutputStream os = cn.getOutputStream();
+            byte[] b = new byte[100];
 
-            // Request body.
-            request.setEntity(fileEntity);
-
-            // Execute the REST API call and get the response entity.
-            HttpResponse response = httpClient.execute(request);
-            HttpEntity entity = response.getEntity();
-
-            if (entity != null)
-            {
-                // Format and display the JSON response.
-                String jsonString = EntityUtils.toString(entity);
-                JSONObject json = new JSONObject(jsonString);
-                //System.out.println("REST Response:\n");
-                //System.out.println(json.toString(2));
-                return json;
-            } else {
-                return null;
+            FileInputStream fi = new FileInputStream(f);
+            int r;
+            while ((r = fi.read(b)) >= 0) {
+                os.write(b, 0, r);
             }
-        }
-        catch (Exception e)
-        {
+            DataInputStream is = new DataInputStream(cn.getInputStream());
+            String jsonString = "";
+            try {
+                while (true) {
+                    jsonString += is.readUTF();
+                }
+
+            } catch (EOFException e) {
+                is.close();
+            }
+
+            cn.disconnect();
+
+            JSONObject json = new JSONObject(jsonString);
+            //System.out.println("REST Response:\n");
+            //System.out.println(json.toString(2));
+            return json;
+
+        } catch (Exception e) {
             // Display error message.
             System.out.println(e.getMessage());
             return null;
         }
-
 
 
     }

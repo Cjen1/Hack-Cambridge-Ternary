@@ -136,22 +136,4 @@ public class TranslatorInterface {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            JSONObject o = OCRInterface.analyseURL("https://www.welt.de/img/wirtschaft/mobile101101592/5112509217-ci102l-w1024/kcal2-DW-Wirtschaft-Michelau-jpg.jpg");
-            List<String> l = OCRInterface.getText(o);
-
-            for (String word : l) {
-                System.out.println(translate(word));
-            }
-
-
-            String response = translate("Milch. Hafer. Weizen. Nüsse", "en");
-            System.out.println(response);
-            response = identify("Milch. Hafer. Weizen. Nüsse");
-            System.out.println(response);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
 }
