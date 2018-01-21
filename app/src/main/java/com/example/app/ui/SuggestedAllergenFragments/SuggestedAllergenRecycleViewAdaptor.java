@@ -9,23 +9,24 @@ import android.widget.TextView;
 
 import com.example.app.ui.R;
 
-import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListner;
+import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.widget.Button;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link SuggestedAllergen} and makes a call to the
- * specified {@link SuggestedAllergenFragmentInteractionListner}.
+ * specified {@link SuggestedAllergenFragmentInteractionListener}.
  */
 public class SuggestedAllergenRecycleViewAdaptor extends RecyclerView.Adapter<SuggestedAllergenRecycleViewAdaptor.ViewHolder> {
 
-    private List<SuggestedAllergen> mValues = new ArrayList<SuggestedAllergen>();
+    private List<SuggestedAllergen> mValues;
+    private SuggestedAllergenFragmentInteractionListener mCallback;
 
-    public SuggestedAllergenRecycleViewAdaptor() {
-        mValues.add(new SuggestedAllergen("foo", 0.5));
+    public SuggestedAllergenRecycleViewAdaptor(List<SuggestedAllergen> al, SuggestedAllergenFragmentInteractionListener callback) {
+        mValues = al;
+        mCallback = callback;
     }
 
     @Override
@@ -34,6 +35,7 @@ public class SuggestedAllergenRecycleViewAdaptor extends RecyclerView.Adapter<Su
                 .inflate(R.layout.fragment_suggested_allergen_item, parent, false);
         return new ViewHolder(view);
     }
+
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
@@ -48,16 +50,16 @@ public class SuggestedAllergenRecycleViewAdaptor extends RecyclerView.Adapter<Su
         holder.mRatingView.setText("O");
         holder.mRatingView.setTextColor(Color.argb(opacity, redness, greenness, 0));
 
-/*
+
         holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    //mListener.onDeleteButtonClick(position);
-                    mValues.remove(position);
+                    mCallback.onSuggestedAllergenDeleteRequest(position);
+
             }
-        });*/
+        });
 
     }
 

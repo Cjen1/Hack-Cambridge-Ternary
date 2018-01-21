@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.test_arrays.TestArrays;
+import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
 import com.example.app.ui.R;
 
 /**
@@ -21,6 +23,8 @@ import com.example.app.ui.R;
 public class SuggestedAllergenFragment extends Fragment {
 
     public final static String TAG="SuggestedAllergenFragme";
+    private RecyclerView mRecyclerView;
+    private SuggestedAllergenFragmentInteractionListener mCallback;
 
 
     /**
@@ -47,18 +51,17 @@ public class SuggestedAllergenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.i(TAG, "onCreateView: Creating View");
         View view = inflater.inflate(R.layout.fragment_suggested_allergen_item_list, container, false);
-
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            mRecyclerView = (RecyclerView) view;
+
             LinearLayoutManager g = new LinearLayoutManager(context);
-            recyclerView.setLayoutManager(g);
-            Log.i(TAG, "onCreateView: Setting adaptor");
-            recyclerView.setAdapter(new SuggestedAllergenRecycleViewAdaptor());
+            mRecyclerView.setLayoutManager(g);
+
+            mRecyclerView.setAdapter(new SuggestedAllergenRecycleViewAdaptor(TestArrays.mSuggestedAllergenArray, mCallback));
         }
         return view;
     }
@@ -67,11 +70,19 @@ public class SuggestedAllergenFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof SuggestedAllergenFragmentInteractionListener) {
+            mCallback = (SuggestedAllergenFragmentInteractionListener)context;
+        }
+        else {
+            Log.e(TAG, "onAttach: SuggestedAllergenFragmentInteractionListener not implemented", new ClassCastException());
+            throw new ClassCastException();
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mCallback = null;
     }
 
     /**
@@ -84,7 +95,8 @@ public class SuggestedAllergenFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface SuggestedAllergenFragmentInteractionListner {
-        void onDeleteButtonClick(final int listPosition);
+    public interface SuggestedAllergenFragmentInteractionListener {
+        void onSuggestedAllergenDeleteRequest(final int listPosition);
+        void onSuggestedAllergenAddRequest(final String allergen);
     }
 }

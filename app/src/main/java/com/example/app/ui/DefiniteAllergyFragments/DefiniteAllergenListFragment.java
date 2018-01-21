@@ -10,21 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.test_arrays.TestArrays;
 import com.example.app.ui.R;
 
 import java.util.Arrays;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link DefiniteAllergenFragmentInteractionListener}
- * interface.
  */
 public class DefiniteAllergenListFragment extends Fragment {
 
     public final static String TAG="DefiniteAllergenFragmen";
-
-    private DefiniteAllergenFragmentInteractionListener mListener;
+    private DefiniteAllergenListFragmentListener mCallback;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,10 +38,6 @@ public class DefiniteAllergenListFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,9 +52,8 @@ public class DefiniteAllergenListFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             LinearLayoutManager g = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(g);
-
-            String[] fooArray = {"foo","bar","bat","baz"};
-            recyclerView.setAdapter(new MyDefiniteAllergenFragmentRecyclerViewAdapter( mListener, Arrays.asList(fooArray)));
+            DefiniteAllergenListItemsFragment d = new DefiniteAllergenListItemsFragment(TestArrays.mDefiniteAllergenArray, mCallback);
+            recyclerView.setAdapter(d);
         }
         return view;
     }
@@ -70,31 +62,24 @@ public class DefiniteAllergenListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof DefiniteAllergenFragmentInteractionListener) {
-            mListener = (DefiniteAllergenFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+
+        try {
+            mCallback = (DefiniteAllergenListFragmentListener) context;
+
+        }  catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: Must implement DefiniteAllergenListFragmentListener", e);
+            throw new ClassCastException();
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mCallback = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface DefiniteAllergenFragmentInteractionListener {
-        void onDeleteButtonClick(final int listPosition);
+    public interface DefiniteAllergenListFragmentListener {
+        void onDefiniteAllergenDelete(int position);
+        void onDefiniteAllergenAdd(String item);
     }
 }

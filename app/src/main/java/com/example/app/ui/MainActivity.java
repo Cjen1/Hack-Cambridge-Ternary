@@ -8,13 +8,20 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment.DefiniteAllergenFragmentInteractionListener;
+
+import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
+import com.example.app.ui.FoodDiaryFragments.FoodDiaryListFragment;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import com.example.app.test_arrays.TestArrays;
+import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergen;
+import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergenFragment;
 
-public class MainActivity extends AppCompatActivity implements DefiniteAllergenFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListener, DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener{
 
-private FoodDiaryFragment mDiaryFragment;
+private FoodDiaryListFragment mDiaryFragment;
 private FragmentManager mFragmentManager;
 private StupidTextureViewFragment mCameraFragment;
 private CombinedAllergenDisplayFragment mCombinedAllergenFragment;
@@ -51,40 +58,68 @@ public boolean onNavigationItemSelected(@NonNull MenuItem item){
         };
 
 @Override
-public void onDeleteButtonClick(int position) {
-    definiteAllergens.remove(position);
-}
-
-@Override
 protected void onCreate(Bundle savedInstanceState){
-
-    Log.i(TAG, "onCreate: Started app");
-
         super.onCreate(savedInstanceState);
 
-    Log.i(TAG, "onCreate: Initialised super");
         setContentView(R.layout.activity_main);
 
-        definiteAllergens = new ArrayList<String>();
-        definiteAllergens.add("food");
-        definiteAllergens.add("baz");
+        String[] foodDiary = {"cheese", "eggs", "biscuits"};
+        String[] definiteAllergens = {"oranges", "pineapple", "chocolate"};
 
-    Log.i(TAG, "onCreate: Created allergy list");
+        ArrayList<String> foodDiaryAL = new ArrayList<>(Arrays.asList(foodDiary));
+        ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
+        ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
+        suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
+        suggestedAllergensAL.add(new SuggestedAllergen("cheesee", 0.75));
 
-    if (savedInstanceState == null)
-        savedInstanceState = new Bundle();
-        savedInstanceState.putStringArrayList("definite_allergens", new ArrayList(definiteAllergens));
+        TestArrays.mFoodDiaryArray = foodDiaryAL;
+        TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
+        TestArrays.mSuggestedAllergenArray = suggestedAllergensAL;
 
         mFragmentManager = getFragmentManager();
-
-    Log.i(TAG, "onCreate: Creating food diary fragment");
-        mDiaryFragment = new FoodDiaryFragment();
+        mDiaryFragment = new FoodDiaryListFragment();
         mCameraFragment = new StupidTextureViewFragment();
         mCombinedAllergenFragment = new CombinedAllergenDisplayFragment();
 
         BottomNavigationView navigation=(BottomNavigationView)findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        }
+
+        @Override
+        public void onSuggestedAllergenAddRequest(String allergen) {
+            TestArrays.mDefiniteAllergenArray.add(allergen);
+            while (TestArrays.mSuggestedAllergenArray.iterator().hasNext()) {
+                SuggestedAllergen item = TestArrays.mSuggestedAllergenArray.iterator().next();
+                if (item.allergen.equals(allergen)) {
+                    TestArrays.mSuggestedAllergenArray.remove(item);
+                }
+            }
+
+
+        }
+
+        @Override
+        public void onSuggestedAllergenDeleteRequest(int position) {
+            TestArrays.mSuggestedAllergenArray.remove(position);
+            refreshCombinedAllergenFragment();
+        }
+
+        @Override
+        public void onDefiniteAllergenDelete(int position) {
+            TestArrays.mDefiniteAllergenArray.remove(position);
+            refreshCombinedAllergenFragment();
+    }
+
+    @Override
+    public void onDefiniteAllergenAdd(String allergen) {
+    //pass
+    }
+
+        private void refreshCombinedAllergenFragment() {
+            FragmentTransaction ft = mFragmentManager.beginTransaction();
+            ft.replace(R.id.frame_layout, mCombinedAllergenFragment);
+            ft.commit();
         }
 
 }
