@@ -15,6 +15,7 @@ import com.example.app.allergic.ReactionEvent;
 import com.example.app.ui.R;
 import com.example.app.allergic.Event;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -23,7 +24,7 @@ import java.util.List;
  */
 public class FoodDiaryListItemsFragment extends RecyclerView.Adapter<FoodDiaryListItemsFragment.ViewHolder> {
 
-    private List<Event> mValues;
+    private List<Event> mValues = new ArrayList<>();
     private FoodDiaryListFragment.FoodDiaryListener mCaller;
 
     public FoodDiaryListItemsFragment( List<Event> values) {
