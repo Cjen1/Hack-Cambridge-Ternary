@@ -24,7 +24,7 @@
         </FrameLayout>
 
         <Button
-            android:id="@+id/Add"
+            android:id="@+id/add_definite_allergen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Add" />
