@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.example.app.DataCentre;
 import com.example.app.allergic.EatEvent;
+import com.example.app.allergyHandling.AllergeneHandler;
 import com.example.app.camera.Camera;
 import com.example.app.ocr.OCRInterface;
 
@@ -54,16 +55,20 @@ public class StupidTextureViewFragment extends Fragment {
         mCamera = new Camera(textureView, this, new DataCentre.saveListener() {
             @Override
             public void callback(String filepath) {
-                showToast("Ran Eval");
-//                List<String> textTokens = OCRInterface.analyseLocalToText(filepath);
-//                EatEvent e = new EatEvent(System.currentTimeMillis(), textTokens);
-//                DataCentre.addEatEvent(e);
+                List<String> textTokens = OCRInterface.analyseLocalToText(filepath);
+                List<String> issues = new AllergeneHandler().allergicIngredients(textTokens);
+                for(String s : issues){
+                    showToast(s);
+                }
             }
         }//Eval Listener
         , new DataCentre.saveListener() {
             @Override
             public void callback(String filepath) {
                 showToast("Ran Add");
+                List<String> textTokens = OCRInterface.analyseLocalToText(filepath);
+                EatEvent e = new EatEvent(System.currentTimeMillis(), textTokens);
+                DataCentre.addEatEvent(e);
             }
         }//Add Listener
         );
@@ -102,7 +107,7 @@ public class StupidTextureViewFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
                 }
             });
         }

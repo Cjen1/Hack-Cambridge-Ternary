@@ -1,6 +1,8 @@
 package com.example.app.ocr;// This sample uses the Apache HTTP client library(org.apache.httpcomponents:httpclient:4.2.4)
 // and the org.json library (org.json:json:20170516).
 
+import android.net.Uri;
+
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
@@ -108,7 +110,11 @@ public class OCRInterface {
             uriBuilder.setParameter("language", "unk");
             uriBuilder.setParameter("detectOrientation ", "true");
 
-            URL url = uriBuilder.build().toURL();
+            Uri.Builder builder = new Uri.Builder();
+            builder.appendQueryParameter("language", "unk");
+            builder.appendQueryParameter("detectOrientation", "true");
+
+            URL url = new URL(uriBase + "?language=unk&detectOrientation=true");
 
             HttpURLConnection cn = (HttpURLConnection) url.openConnection();
             cn.setDoOutput(true);
