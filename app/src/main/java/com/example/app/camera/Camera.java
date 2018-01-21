@@ -74,6 +74,7 @@ public class Camera {
     }
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     private static final String FRAGMENT_DIALOG = "dialog";
+    public static Camera activeCamera;
 
     private static final int STATE_PREVIEW = 0;
     private static final int STATE_WAITING_LOCK = 1;
@@ -407,6 +408,7 @@ public class Camera {
         mActivity = parentFragment.getActivity();
         mEvalListener = evalListener;
         mAddListener = addListener;
+        activeCamera = this;//this will fail later :P
     }
 
     public void onResume() {
@@ -444,11 +446,14 @@ public class Camera {
 
         private DataCentre.saveListener mSavedListener;
 
+        private Camera mCamera;
+
 
         ImageSaver(Image image, String file, DataCentre.saveListener listener) {
             mImage = image;
             mFile = new File(file);
             mSavedListener = listener;
+            mCamera = activeCamera;
         }
 
         @Override
@@ -476,6 +481,7 @@ public class Camera {
             if(mSavedListener != null) {
                 mSavedListener.callback(mFile.getAbsolutePath());
             }
+            mCamera.createCameraPreviewSession();
         }
 
     }
