@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.app.test_arrays.TestArrays;
+import com.example.app.DataCentre;
 import com.example.app.ui.R;
 
 import java.util.Arrays;
@@ -52,7 +52,7 @@ public class DefiniteAllergenListFragment extends Fragment {
             RecyclerView recyclerView = (RecyclerView) view;
             LinearLayoutManager g = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(g);
-            DefiniteAllergenListItemsFragment d = new DefiniteAllergenListItemsFragment(TestArrays.mDefiniteAllergenArray, mCallback);
+            DefiniteAllergenListItemsFragment d = new DefiniteAllergenListItemsFragment(DataCentre.mDefiniteAllergenArray, mCallback);
             recyclerView.setAdapter(d);
         }
 

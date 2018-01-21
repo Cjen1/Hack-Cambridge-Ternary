@@ -12,4 +12,7 @@ public class TestArrays {
     public static List<String> mFoodDiaryArray;
     public static List<SuggestedAllergen> mSuggestedAllergenArray;
     public static List<String> mDefiniteAllergenArray;
+
+    public void generateTestData(){
+    }
 }
