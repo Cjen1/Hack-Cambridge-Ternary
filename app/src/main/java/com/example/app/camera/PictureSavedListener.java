@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class PictureSavedListener {
-    private static final String TAG = "OCR Listener";
+    private static final String TAG = "OCR saveListener";
 
     public void notifyOCR(String filepath){
         List<String> textTokens = OCRInterface.analyseLocalToText(filepath);

@@ -10,12 +10,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.ImageFormat;
-import android.graphics.Matrix;
-import android.graphics.Picture;
 import android.graphics.Point;
-import android.graphics.RectF;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.*;
 import android.hardware.camera2.params.StreamConfigurationMap;
@@ -33,8 +29,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.widget.Toast;
 
-import com.example.app.allergic.EatEvent;
-import com.example.app.allergic.Event;
+import com.example.app.DataCentre;
 import com.example.app.ui.R;
 
 import java.io.File;
@@ -63,7 +58,7 @@ public class Camera {
     private Fragment mFragment;
     private HandlerThread mBackgroundThread;
     private Handler mBackgroundHandler;
-    PictureSavedListener mSavedListener;
+    DataCentre.saveListener mSavedListener;
 
     private boolean mFlashSupported;
     private int mSensorOrientation;
@@ -384,7 +379,7 @@ public class Camera {
         //endregion
     }
 
-    public Camera(TextureView destinationTextureView, Fragment parentFragment, PictureSavedListener listener){
+    public Camera(TextureView destinationTextureView, Fragment parentFragment, DataCentre.saveListener listener){
         mTextureView = destinationTextureView;
         mFragment = parentFragment;
         mActivity = parentFragment.getActivity();
@@ -420,10 +415,10 @@ public class Camera {
          */
         private final File mFile;
 
-        private PictureSavedListener mSavedListener;
+        private DataCentre.saveListener mSavedListener;
 
 
-        ImageSaver(Image image, String file, PictureSavedListener listener) {
+        ImageSaver(Image image, String file, DataCentre.saveListener listener) {
             mImage = image;
             mFile = new File(file);
             mSavedListener = listener;
@@ -450,8 +445,8 @@ public class Camera {
                     }
                 }
             }
-
-            mSavedListener.notifyOCR(mFile.getAbsolutePath());
+            //todo if CameraType = 0 then call evaluator otherwise call addfood callback
+            mSavedListener.callback(mFile.getAbsolutePath());
         }
 
     }
