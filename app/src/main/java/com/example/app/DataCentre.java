@@ -4,6 +4,7 @@ package com.example.app;
 import com.example.app.allergic.EatEvent;
 import com.example.app.allergic.Event;
 import com.example.app.allergic.History;
+import com.example.app.test_arrays.TestArrays;
 import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
 import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListItemsFragment;
 import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergen;
@@ -34,7 +35,7 @@ public class DataCentre {
 
     public static List<Event> mFoodDiaryArray;
     public static List<SuggestedAllergen> mSuggestedAllergenArray;
-    public static List<String> mDefiniteAllergenArray;
+    public static List<String> mDefiniteAllergenArray = new ArrayList<>();
 
     public abstract class Listener {
         public abstract void callback();
@@ -61,4 +62,6 @@ public class DataCentre {
 
         mSuggestedAllergenArray = suggestedAllergens;
     }
+
+//    TestArrays.generateTestData();
 }

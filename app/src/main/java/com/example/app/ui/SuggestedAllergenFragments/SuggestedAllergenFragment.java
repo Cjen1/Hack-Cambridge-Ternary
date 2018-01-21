@@ -10,8 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.app.test_arrays.TestArrays;
-import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
+import com.example.app.DataCentre;
 import com.example.app.ui.R;
 
 /**
@@ -61,7 +60,7 @@ public class SuggestedAllergenFragment extends Fragment {
             LinearLayoutManager g = new LinearLayoutManager(context);
             mRecyclerView.setLayoutManager(g);
 
-            mRecyclerView.setAdapter(new SuggestedAllergenRecycleViewAdaptor(TestArrays.mSuggestedAllergenArray, mCallback));
+            mRecyclerView.setAdapter(new SuggestedAllergenRecycleViewAdaptor(DataCentre.mSuggestedAllergenArray, mCallback));
         }
         Log.i(TAG, "onCreateView: Returning view");
         return view;

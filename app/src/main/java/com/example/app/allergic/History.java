@@ -10,7 +10,7 @@ import java.util.Map;
 public class History {
     //todo ensure no synchronisation errors occur here
     public  LinkedList<Event> events;
-    public Map<String, Double> allergenMap;
+    public Map<String, Double> allergenMap = new HashMap<>();
 
     public void updateAllergenMap(){
         allergenMap = getLatestAllergens();
