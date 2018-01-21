@@ -1,32 +1,33 @@
-package com.example.app.ui;
+package com.example.app.ui.FoodDiaryFragments;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+
+import com.example.app.test_arrays.TestArrays;
+import com.example.app.ui.R;
+
+import junit.framework.Test;
 
 import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FoodDiaryFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link FoodDiaryFragment#newInstance} factory method to
+ * Use the {@link FoodDiaryListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FoodDiaryFragment extends Fragment {
+public class FoodDiaryListFragment extends Fragment {
 
     final String TAG = "";
-    private ListView mList;
-    public FoodDiaryFragment() {
+    private RecyclerView mList;
+    public FoodDiaryListFragment() {
         // Required empty public constructor
     }
 
@@ -34,10 +35,10 @@ public class FoodDiaryFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment FoodDiaryFragment.
+     * @return A new instance of fragment FoodDiaryListFragment.
      */
-    public static FoodDiaryFragment newInstance() {
-        FoodDiaryFragment fragment = new FoodDiaryFragment();
+    public static FoodDiaryListFragment newInstance() {
+        FoodDiaryListFragment fragment = new FoodDiaryListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -55,18 +56,12 @@ public class FoodDiaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_food_diary, container, false);
 
-        mList = (ListView)view.findViewById(R.id.list);
-
-        ArrayList<String> l = new ArrayList<String>();
-        l.add("foo");
-        l.add("bar");
-
-
-        Log.i(TAG, "onCreateView: Adding adapter");
-        ListAdapter adapter = new ArrayAdapter<String>(container.getContext(), R.layout.simplerow, l);
+        mList = (RecyclerView) view.findViewById(R.id.list);
+        Context context = view.getContext();
+        LinearLayoutManager g = new LinearLayoutManager(context);
+        mList.setLayoutManager(g);
+        FoodDiaryListItemsFragment adapter = new FoodDiaryListItemsFragment(TestArrays.mFoodDiaryArray);
         mList.setAdapter(adapter);
-
-        Log.i(TAG, "onCreateView: done");
 
         return view;
     }

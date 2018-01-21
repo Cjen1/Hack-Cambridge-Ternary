@@ -1,35 +1,38 @@
 package com.example.app.ui.DefiniteAllergyFragments;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Button;
 
-import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenFragmentFragment.DefiniteAllergenFragmentInteractionListner;
 import com.example.app.ui.R;
 
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a String and makes a call to the
- * specified {@link DefiniteAllergenFragmentInteractionListner}.
  */
-public class MyDefiniteAllergenFragmentRecyclerViewAdapter extends RecyclerView.Adapter<MyDefiniteAllergenFragmentRecyclerViewAdapter.ViewHolder> {
+public class DefiniteAllergenListItemsFragment extends RecyclerView.Adapter<DefiniteAllergenListItemsFragment.ViewHolder> {
 
-    private final List<String> mValues;
-    private final DefiniteAllergenFragmentInteractionListner mListener;
+    private List<String> mValues;
+    private DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener mCallback;
 
-    public MyDefiniteAllergenFragmentRecyclerViewAdapter(List<String> items, DefiniteAllergenFragmentInteractionListner listener) {
-        mValues = items;
-        mListener = listener;
+
+    public DefiniteAllergenListItemsFragment(List<String> values, DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener callback) {
+        mValues = values;
+        mCallback = callback;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_definiteallergenfragment, parent, false);
+                .inflate(R.layout.fragment_definite_allergens_list_item, parent, false);
+
+
+
         return new ViewHolder(view);
     }
 
@@ -39,12 +42,8 @@ public class MyDefiniteAllergenFragmentRecyclerViewAdapter extends RecyclerView.
 
         holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onDeleteButtonClick(position);
-                }
+            public void onClick(View view) {
+                mCallback.onDefiniteAllergenDelete(position);
             }
         });
     }
