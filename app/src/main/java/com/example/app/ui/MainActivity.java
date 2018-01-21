@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.app.DataCentre;
+import com.example.app.allergic.Event;
 import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
 import com.example.app.ui.FoodDiaryFragments.FoodDiaryListFragment;
 
@@ -19,7 +21,10 @@ import com.example.app.test_arrays.TestArrays;
 import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergen;
 import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergenFragment;
 
-public class MainActivity extends AppCompatActivity implements SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListener, DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener{
+public class MainActivity extends AppCompatActivity implements
+        SuggestedAllergenFragment.SuggestedAllergenFragmentInteractionListener,
+        DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener,
+        FoodDiaryListFragment.FoodDiaryListener {
 
 private FoodDiaryListFragment mDiaryFragment;
 private FragmentManager mFragmentManager;
@@ -128,6 +133,14 @@ protected void onCreate(Bundle savedInstanceState){
         ft.replace(R.id.frame_layout, combined);
 
         ft.commit();
+    }
+
+    public void addEventToDiary(Event e) {
+    //pass
+    }
+
+    public void removeEventFromDiary(int position) {
+        DataCentre.remove(DataCentre.history.events.get(position));
     }
 
 }

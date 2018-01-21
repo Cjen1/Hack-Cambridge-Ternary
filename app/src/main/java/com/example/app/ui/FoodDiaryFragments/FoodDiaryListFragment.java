@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.DataCentre;
 import com.example.app.test_arrays.TestArrays;
 import com.example.app.ui.R;
+import com.example.app.allergic.Event;
 
 import junit.framework.Test;
 
@@ -27,6 +29,8 @@ public class FoodDiaryListFragment extends Fragment {
 
     final String TAG = "";
     private RecyclerView mList;
+    private FoodDiaryListener mCallback;
+
     public FoodDiaryListFragment() {
         // Required empty public constructor
     }
@@ -60,7 +64,7 @@ public class FoodDiaryListFragment extends Fragment {
         Context context = view.getContext();
         LinearLayoutManager g = new LinearLayoutManager(context);
         mList.setLayoutManager(g);
-        FoodDiaryListItemsFragment adapter = new FoodDiaryListItemsFragment(TestArrays.mFoodDiaryArray);
+        FoodDiaryListItemsFragment adapter = new FoodDiaryListItemsFragment(DataCentre.history.events);
         mList.setAdapter(adapter);
 
         return view;
@@ -69,11 +73,25 @@ public class FoodDiaryListFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        if (context instanceof FoodDiaryListener) {
+            mCallback = (FoodDiaryListener)context;
+        }
+        else {
+            Exception e = new ClassCastException();
+            Log.e(TAG, "onAttach: FoodDiaryListFragment needs to implement foodDiaryListener", e);
+            throw new ClassCastException();
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public interface FoodDiaryListener {
+        void addEventToDiary(Event e);
+        void removeEventFromDiary(int position);
     }
 
 }
