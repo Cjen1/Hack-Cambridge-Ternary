@@ -8,7 +8,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class History {
-    public LinkedList<Event> events;
+    //todo ensure no synchronisation errors occur here
+    public  LinkedList<Event> events;
     public Map<String, Double> allergenMap;
 
     public void updateAllergenMap(){
