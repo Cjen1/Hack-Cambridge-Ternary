@@ -47,20 +47,20 @@ public class SuggestedAllergenRecycleViewAdaptor extends RecyclerView.Adapter<Su
 
         int opacity = 0xFF;
 
-        holder.mRatingView.setText("O");
+        holder.mRatingView.setText("•");
         holder.mRatingView.setTextColor(Color.argb(opacity, redness, greenness, 0));
 
-/*
+
         holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
                 if (mCallback != null)
-                    mCallback.onSuggestedAllergenDeleteRequest(position);
+                    mCallback.onSuggestedAllergenAddRequest(mValues.get(position).allergen, position);
 
             }
-        });*/
+        });
 
     }
 
@@ -81,7 +81,7 @@ public class SuggestedAllergenRecycleViewAdaptor extends RecyclerView.Adapter<Su
             mView = view;
             mAllergenView = (TextView) view.findViewById(R.id.allergen);
             mRatingView = (TextView) view.findViewById(R.id.t_light);
-            mButton = (Button) view.findViewById(R.id.delete_button);
+            mButton = (Button) view.findViewById(R.id.add_suggested_allergen);
         }
 
         @Override

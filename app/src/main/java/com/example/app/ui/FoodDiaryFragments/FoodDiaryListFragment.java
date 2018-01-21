@@ -36,6 +36,7 @@ public class FoodDiaryListFragment extends Fragment {
     private Button mAddReactionButton;
     private Button mAddFoodButton;
 
+
     public FoodDiaryListFragment() {
         // Required empty public constructor
     }
@@ -81,6 +82,7 @@ public class FoodDiaryListFragment extends Fragment {
         mAddReactionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG, "onClick: ReactionEvent created");
                 mCallback.addEventToDiary(new ReactionEvent(new Date().getTime()));
             }
         });
@@ -90,7 +92,7 @@ public class FoodDiaryListFragment extends Fragment {
             Context context = view.getContext();
             LinearLayoutManager g = new LinearLayoutManager(context);
             mList.setLayoutManager(g);
-            FoodDiaryListItemsFragment adapter = new FoodDiaryListItemsFragment(DataCentre.history.events);
+            FoodDiaryListItemsFragment adapter = new FoodDiaryListItemsFragment(DataCentre.history.events, mCallback);
             mList.setAdapter(adapter);
 
 

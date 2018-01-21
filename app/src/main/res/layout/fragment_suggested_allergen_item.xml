@@ -17,16 +17,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:text="O"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textColor="@android:color/background_dark"
         android:textSize="30sp"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/delete"
+        android:id="@+id/add_suggested_allergen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="X" />
+        android:text="+" />
 </LinearLayout>

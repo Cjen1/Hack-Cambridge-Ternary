@@ -98,6 +98,6 @@ public class SuggestedAllergenFragment extends Fragment {
      */
     public interface SuggestedAllergenFragmentInteractionListener {
         void onSuggestedAllergenDeleteRequest(final int listPosition);
-        void onSuggestedAllergenAddRequest(final String allergen);
+        void onSuggestedAllergenAddRequest(final String allergen, final int listPosition);
     }
 }

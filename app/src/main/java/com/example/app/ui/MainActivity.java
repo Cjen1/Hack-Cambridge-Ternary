@@ -85,8 +85,10 @@ private List<String> definiteAllergens;
     }
 
     @Override
-    public void onSuggestedAllergenAddRequest(String allergen) {
+    public void onSuggestedAllergenAddRequest(String allergen, int position) {
         DataCentre.mDefiniteAllergenArray.add(allergen);
+        DataCentre.mSuggestedAllergenArray.remove(position);
+        DataCentre.history.updateAllergenMap();
         refreshCombinedAllergenFragment();
     }
 
@@ -118,14 +120,28 @@ private List<String> definiteAllergens;
         ft.commit();
     }
 
+    private void refreshFoodDiaryFragment() {
+        FoodDiaryListFragment fd = new FoodDiaryListFragment();
+        mDiaryFragment = fd;
+
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+        ft.replace(R.id.frame_layout, fd);
+        ft.commit();
+    }
+
     @Override
     public void addEventToDiary(Event e) {
-    //pass
+
+        DataCentre.history.events.add(e);
+        DataCentre.history.updateAllergenMap();
+        refreshFoodDiaryFragment();
     }
 
     @Override
     public void removeEventFromDiary(int position) {
         DataCentre.remove(DataCentre.history.events.get(position));
+        DataCentre.history.updateAllergenMap();
+        refreshFoodDiaryFragment();
     }
 
 }

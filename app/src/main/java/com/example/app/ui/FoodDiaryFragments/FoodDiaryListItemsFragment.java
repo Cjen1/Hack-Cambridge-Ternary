@@ -4,6 +4,7 @@ package com.example.app.ui.FoodDiaryFragments;
  * Created by sophie on 21/01/18.
  */
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +28,9 @@ public class FoodDiaryListItemsFragment extends RecyclerView.Adapter<FoodDiaryLi
     private List<Event> mValues = new ArrayList<>();
     private FoodDiaryListFragment.FoodDiaryListener mCaller;
 
-    public FoodDiaryListItemsFragment( List<Event> values) {
+    public FoodDiaryListItemsFragment(List<Event> values, FoodDiaryListFragment.FoodDiaryListener mCaller) {
         mValues = values;
+        this.mCaller = mCaller;
     }
 
     @Override
@@ -69,7 +71,13 @@ public class FoodDiaryListItemsFragment extends RecyclerView.Adapter<FoodDiaryLi
             holder.mButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mCaller.removeEventFromDiary(position);
+                    if (mCaller !=null) {
+                        Log.i("FoodDiaryListItem", "onClick: Click registered");
+                        mCaller.removeEventFromDiary(position);
+                    }
+
+                    else
+                        Log.w("FoodDiaryListItem", "onClick: mCaller is null");
                 }
             });
         }
