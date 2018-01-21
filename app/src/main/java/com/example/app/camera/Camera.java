@@ -58,7 +58,9 @@ public class Camera {
     private Fragment mFragment;
     private HandlerThread mBackgroundThread;
     private Handler mBackgroundHandler;
-    DataCentre.saveListener mSavedListener;
+
+    DataCentre.saveListener mEvalListener;
+    DataCentre.saveListener mAddListener;
 
     private boolean mFlashSupported;
     private int mSensorOrientation;
@@ -129,10 +131,27 @@ public class Camera {
     };
 
     private static int imageNum = 0;
+
     private final ImageReader.OnImageAvailableListener mOnImageAvailableListener = new ImageReader.OnImageAvailableListener() {
         @Override
         public void onImageAvailable(ImageReader imageReader) {
-            mBackgroundHandler.post(new ImageSaver(imageReader.acquireNextImage(), mFilePath + imageNum, mSavedListener));
+            mBackgroundHandler.post(new ImageSaver(imageReader.acquireNextImage(), mFilePath + imageNum, null));
+            imageNum++;
+        }
+    };
+
+    private final ImageReader.OnImageAvailableListener mOnImageAvailableListenerEval = new ImageReader.OnImageAvailableListener() {
+        @Override
+        public void onImageAvailable(ImageReader imageReader) {
+            mBackgroundHandler.post(new ImageSaver(imageReader.acquireNextImage(), mFilePath + imageNum, mEvalListener));
+            imageNum++;
+        }
+    };
+
+    private final ImageReader.OnImageAvailableListener mOnImageAvailableListenerAdd = new ImageReader.OnImageAvailableListener() {
+        @Override
+        public void onImageAvailable(ImageReader imageReader) {
+            mBackgroundHandler.post(new ImageSaver(imageReader.acquireNextImage(), mFilePath + imageNum, mAddListener));
             imageNum++;
         }
     };
@@ -198,7 +217,7 @@ public class Camera {
             return;
         }
 
-        setUpCameraOutputs(width,height);
+        setUpCameraOutputs(width,height, mOnImageAvailableListener);
 
         CameraManager manager = (CameraManager) mActivity.getSystemService(Context.CAMERA_SERVICE);
         try{
@@ -300,7 +319,7 @@ public class Camera {
         }
     }
 
-    private void setUpCameraOutputs(int width, int height){
+    private void setUpCameraOutputs(int width, int height, ImageReader.OnImageAvailableListener listener){
         CameraManager manager = (CameraManager) mActivity.getSystemService(Context.CAMERA_SERVICE);
         try {
             for (String cameraId : manager.getCameraIdList()) {
@@ -317,7 +336,7 @@ public class Camera {
                         Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                         new CompareSizesByArea());
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(), ImageFormat.JPEG, 2);
-                mImageReader.setOnImageAvailableListener(mOnImageAvailableListener, mBackgroundHandler);
+                mImageReader.setOnImageAvailableListener(listener, mBackgroundHandler);
 
 
                 Point displaySize = new Point();
@@ -344,10 +363,13 @@ public class Camera {
         }
     }
 
-    private void captureStillPicture() {
+    private void captureStillPicture(ImageReader.OnImageAvailableListener listener) {
 
         //region capture image
         try {
+
+            mImageReader.setOnImageAvailableListener(listener, mBackgroundHandler);
+
             if (mCameraDevice == null) {
                 return;
             }
@@ -379,11 +401,12 @@ public class Camera {
         //endregion
     }
 
-    public Camera(TextureView destinationTextureView, Fragment parentFragment, DataCentre.saveListener listener){
+    public Camera(TextureView destinationTextureView, Fragment parentFragment, DataCentre.saveListener evalListener, DataCentre.saveListener addListener){
         mTextureView = destinationTextureView;
         mFragment = parentFragment;
         mActivity = parentFragment.getActivity();
-        mSavedListener = listener;
+        mEvalListener = evalListener;
+        mAddListener = addListener;
     }
 
     public void onResume() {
@@ -400,8 +423,12 @@ public class Camera {
         stopBackgroundThread();
     }
 
-    public void takePicture(){
-        captureStillPicture();
+    public void takeEvalPicture(){
+        captureStillPicture(mOnImageAvailableListenerEval);
+    }
+
+    public void takeAddPicture(){
+        captureStillPicture(mOnImageAvailableListenerAdd);
     }
 
     private static class ImageSaver implements Runnable {
@@ -446,7 +473,9 @@ public class Camera {
                 }
             }
             //todo if CameraType = 0 then call evaluator otherwise call addfood callback
-            mSavedListener.callback(mFile.getAbsolutePath());
+            if(mSavedListener != null) {
+                mSavedListener.callback(mFile.getAbsolutePath());
+            }
         }
 
     }

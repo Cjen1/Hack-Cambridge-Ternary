@@ -1,6 +1,7 @@
 package com.example.app.ui.FoodDiaryFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,13 +14,9 @@ import android.widget.Button;
 
 import com.example.app.DataCentre;
 import com.example.app.allergic.ReactionEvent;
-import com.example.app.test_arrays.TestArrays;
 import com.example.app.ui.R;
 import com.example.app.allergic.Event;
 
-import junit.framework.Test;
-
-import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -69,15 +66,7 @@ public class FoodDiaryListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_food_diary, container, false);
 
         View buttonView = view.findViewById(R.id.foodDiaryRootLayout).findViewById(R.id.foodDiarySecondaryLayout);
-        mAddFoodButton = (Button)buttonView.findViewById(R.id.add_food);
         mAddReactionButton = (Button)buttonView.findViewById(R.id.add_reaction);
-
-        mAddFoodButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         mAddReactionButton.setOnClickListener(new View.OnClickListener() {
             @Override

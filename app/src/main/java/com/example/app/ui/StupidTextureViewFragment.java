@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.app.DataCentre;
 import com.example.app.allergic.EatEvent;
@@ -53,15 +54,31 @@ public class StupidTextureViewFragment extends Fragment {
         mCamera = new Camera(textureView, this, new DataCentre.saveListener() {
             @Override
             public void callback(String filepath) {
-                List<String> textTokens = OCRInterface.analyseLocalToText(filepath);
-                EatEvent e = new EatEvent(System.currentTimeMillis(), textTokens);
-                DataCentre.addEatEvent(e);
+                showToast("Ran Eval");
+//                List<String> textTokens = OCRInterface.analyseLocalToText(filepath);
+//                EatEvent e = new EatEvent(System.currentTimeMillis(), textTokens);
+//                DataCentre.addEatEvent(e);
             }
-        });
-        textureView.setOnClickListener(new View.OnClickListener() {
+        }//Eval Listener
+        , new DataCentre.saveListener() {
+            @Override
+            public void callback(String filepath) {
+                showToast("Ran Add");
+            }
+        }//Add Listener
+        );
+
+        rootView.findViewById(R.id.evaluate_food).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCamera.takePicture();
+                mCamera.takeEvalPicture();
+            }
+        });
+
+        rootView.findViewById(R.id.eat_food).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mCamera.takeAddPicture();
             }
         });
 
@@ -78,5 +95,16 @@ public class StupidTextureViewFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mCamera.onResume();
+    }
+
+    private void showToast(final String text) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }
