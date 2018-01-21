@@ -60,59 +60,59 @@ public boolean onNavigationItemSelected(@NonNull MenuItem item){
 
 @Override
 protected void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
+    super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_main);
 
-        String[] foodDiary = {"cheese", "eggs", "biscuits"};
-        String[] definiteAllergens = {"oranges", "pineapple", "chocolate"};
+    String[] foodDiary = {"cheese", "eggs", "biscuits"};
+    String[] definiteAllergens = {"oranges", "pineapple", "chocolate"};
 
-        ArrayList<String> foodDiaryAL = new ArrayList<>(Arrays.asList(foodDiary));
-        ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
-        ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
-        suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
-        suggestedAllergensAL.add(new SuggestedAllergen("cheese", 0.75));
+    ArrayList<String> foodDiaryAL = new ArrayList<>(Arrays.asList(foodDiary));
+    ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
+    ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
+    suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
+    suggestedAllergensAL.add(new SuggestedAllergen("cheese", 0.75));
 
-        TestArrays.mFoodDiaryArray = foodDiaryAL;
-        TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
-        TestArrays.mSuggestedAllergenArray = suggestedAllergensAL;
+    TestArrays.mFoodDiaryArray = foodDiaryAL;
+    TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
+    TestArrays.mSuggestedAllergenArray = suggestedAllergensAL;
 
-        mFragmentManager = getFragmentManager();
-        mDiaryFragment = new FoodDiaryListFragment();
-        mCameraFragment = new StupidTextureViewFragment();
-        mCombinedAllergenFragment = new CombinedAllergenDisplayFragment();
+    mFragmentManager = getFragmentManager();
+    mDiaryFragment = new FoodDiaryListFragment();
+    mCameraFragment = new StupidTextureViewFragment();
+    mCombinedAllergenFragment = new CombinedAllergenDisplayFragment();
 
-        BottomNavigationView navigation=(BottomNavigationView)findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    BottomNavigationView navigation= findViewById(R.id.navigation);
+    navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        }
+    }
 
-        @Override
-        public void onSuggestedAllergenAddRequest(String allergen) {
+    @Override
+    public void onSuggestedAllergenAddRequest(String allergen) {
 
-            TestArrays.mDefiniteAllergenArray.add(allergen);
-            while (TestArrays.mSuggestedAllergenArray.iterator().hasNext()) {
-                SuggestedAllergen item = TestArrays.mSuggestedAllergenArray.iterator().next();
-                if (item.allergen.equals(allergen)) {
-                    TestArrays.mSuggestedAllergenArray.remove(item);
-                }
+        TestArrays.mDefiniteAllergenArray.add(allergen);
+        while (TestArrays.mSuggestedAllergenArray.iterator().hasNext()) {
+            SuggestedAllergen item = TestArrays.mSuggestedAllergenArray.iterator().next();
+            if (item.allergen.equals(allergen)) {
+                TestArrays.mSuggestedAllergenArray.remove(item);
             }
-
-            refreshCombinedAllergenFragment();
-
-
         }
 
-        @Override
-        public void onSuggestedAllergenDeleteRequest(int position) {
-            TestArrays.mSuggestedAllergenArray.remove(position);
-            refreshCombinedAllergenFragment();
-        }
+        refreshCombinedAllergenFragment();
 
-        @Override
-        public void onDefiniteAllergenDelete(int position) {
-            TestArrays.mDefiniteAllergenArray.remove(position);
-            refreshCombinedAllergenFragment();
+
+    }
+
+    @Override
+    public void onSuggestedAllergenDeleteRequest(int position) {
+        TestArrays.mSuggestedAllergenArray.remove(position);
+        refreshCombinedAllergenFragment();
+    }
+
+    @Override
+    public void onDefiniteAllergenDelete(int position) {
+        TestArrays.mDefiniteAllergenArray.remove(position);
+        refreshCombinedAllergenFragment();
     }
 
     @Override
@@ -120,10 +120,14 @@ protected void onCreate(Bundle savedInstanceState){
     //pass
     }
 
-        private void refreshCombinedAllergenFragment() {
-            FragmentTransaction ft = mFragmentManager.beginTransaction();
-            ft.replace(R.id.frame_layout, mCombinedAllergenFragment);
-            ft.commit();
-        }
+    private void refreshCombinedAllergenFragment() {
+        CombinedAllergenDisplayFragment combined = new CombinedAllergenDisplayFragment();
+        mCombinedAllergenFragment = combined;
+
+        FragmentTransaction ft = mFragmentManager.beginTransaction();
+        ft.replace(R.id.frame_layout, combined);
+
+        ft.commit();
+    }
 
 }

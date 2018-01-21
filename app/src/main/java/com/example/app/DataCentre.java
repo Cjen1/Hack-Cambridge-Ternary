@@ -5,6 +5,7 @@ import com.example.app.allergic.EatEvent;
 import com.example.app.allergic.Event;
 import com.example.app.allergic.History;
 import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListFragment;
+import com.example.app.ui.DefiniteAllergyFragments.DefiniteAllergenListItemsFragment;
 
 import java.util.List;
 
@@ -21,5 +22,7 @@ public class DataCentre {
 
     private static History history = new History();
 
-    private static List<DefiniteAllergenListFragment> definiteAllergenListFragments
+    public abstract class Listener {
+        public abstract void callback();
+    };
 }
