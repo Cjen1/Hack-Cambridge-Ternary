@@ -20,7 +20,7 @@ public class DataCentre {
         history.updateAllergenMap();
     }
 
-    private static History history = new History();
+    public static History history = new History();
 
     public abstract class Listener {
         public abstract void callback();
