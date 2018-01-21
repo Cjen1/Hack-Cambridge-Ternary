@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONObject;
 
 public class OCRInterface {
@@ -106,10 +105,6 @@ public class OCRInterface {
             // NOTE: You must use the same location in your REST call as you used to obtain your subscription keys.
             //   For example, if you obtained your subscription keys from westus, replace "westcentralus" in the
             //   URL below with "westus".
-            URIBuilder uriBuilder = new URIBuilder(uriBase);
-            uriBuilder.setParameter("language", "unk");
-            uriBuilder.setParameter("detectOrientation ", "true");
-
             Uri.Builder builder = new Uri.Builder();
             builder.appendQueryParameter("language", "unk");
             builder.appendQueryParameter("detectOrientation", "true");
