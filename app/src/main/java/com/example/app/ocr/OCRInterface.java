@@ -78,6 +78,15 @@ public class OCRInterface
         return result;
     }
 
+    public static List<String> analyseLocalToText(String imgUrl) {
+        File f = new File(imgUrl);
+        FileEntity fileEntity = new FileEntity(f, ContentType.APPLICATION_OCTET_STREAM);
+        JSONObject result = serverRequest(fileEntity,"application/octet-stream");
+        List<String> l = getText(result);
+
+        return l;
+    }
+
     public static JSONObject analyseURL(String url) {
         try {
             StringEntity requestEntity =
