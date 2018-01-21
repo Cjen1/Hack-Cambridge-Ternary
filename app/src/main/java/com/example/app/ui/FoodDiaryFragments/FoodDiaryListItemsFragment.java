@@ -48,11 +48,11 @@ public class FoodDiaryListItemsFragment extends RecyclerView.Adapter<FoodDiaryLi
 
         if (e instanceof EatEvent) {
             EatEvent ee = (EatEvent) e;
-            while (ee.ingredients.iterator().hasNext()) {
-                String item = ee.ingredients.iterator().next();
-                eventString += item;
-                if (ee.ingredients.iterator().hasNext())
-                    eventString += ", ";
+            if(ee.ingredients.size() > 0) {
+                eventString += ee.ingredients.get(0);
+                for (int i = 1; i < ee.ingredients.size(); i++){
+                    eventString += ", " + ee.ingredients.get(i);
+                }
             }
         }
         if (e instanceof ReactionEvent) {
