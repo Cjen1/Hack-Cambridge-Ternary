@@ -51,6 +51,7 @@ public boolean onNavigationItemSelected(@NonNull MenuItem item){
                 ft = mFragmentManager.beginTransaction();
                 ft.replace(R.id.frame_layout, mCombinedAllergenFragment);
                 ft.commit();
+                Log.i(TAG, "onNavigationItemSelected: Finished wrangling navigation profile");
                 return true;
             }
         return false;
@@ -70,7 +71,7 @@ protected void onCreate(Bundle savedInstanceState){
         ArrayList<String> definiteAllergiesAL = new ArrayList<>(Arrays.asList(definiteAllergens));
         ArrayList<SuggestedAllergen> suggestedAllergensAL = new ArrayList<>();
         suggestedAllergensAL.add(new SuggestedAllergen("peaches", 0.25));
-        suggestedAllergensAL.add(new SuggestedAllergen("cheesee", 0.75));
+        suggestedAllergensAL.add(new SuggestedAllergen("cheese", 0.75));
 
         TestArrays.mFoodDiaryArray = foodDiaryAL;
         TestArrays.mDefiniteAllergenArray = definiteAllergiesAL;
@@ -88,6 +89,7 @@ protected void onCreate(Bundle savedInstanceState){
 
         @Override
         public void onSuggestedAllergenAddRequest(String allergen) {
+
             TestArrays.mDefiniteAllergenArray.add(allergen);
             while (TestArrays.mSuggestedAllergenArray.iterator().hasNext()) {
                 SuggestedAllergen item = TestArrays.mSuggestedAllergenArray.iterator().next();
@@ -95,6 +97,8 @@ protected void onCreate(Bundle savedInstanceState){
                     TestArrays.mSuggestedAllergenArray.remove(item);
                 }
             }
+
+            refreshCombinedAllergenFragment();
 
 
         }

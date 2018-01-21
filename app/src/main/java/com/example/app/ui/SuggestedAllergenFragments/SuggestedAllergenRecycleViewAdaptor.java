@@ -50,16 +50,17 @@ public class SuggestedAllergenRecycleViewAdaptor extends RecyclerView.Adapter<Su
         holder.mRatingView.setText("O");
         holder.mRatingView.setTextColor(Color.argb(opacity, redness, greenness, 0));
 
-
+/*
         holder.mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
+                if (mCallback != null)
                     mCallback.onSuggestedAllergenDeleteRequest(position);
 
             }
-        });
+        });*/
 
     }
 

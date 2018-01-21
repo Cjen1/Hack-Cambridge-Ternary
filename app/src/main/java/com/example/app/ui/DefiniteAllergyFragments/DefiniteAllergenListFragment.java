@@ -55,6 +55,8 @@ public class DefiniteAllergenListFragment extends Fragment {
             DefiniteAllergenListItemsFragment d = new DefiniteAllergenListItemsFragment(TestArrays.mDefiniteAllergenArray, mCallback);
             recyclerView.setAdapter(d);
         }
+
+        Log.i(TAG, "onCreateView: Returning view");
         return view;
     }
 
@@ -65,6 +67,7 @@ public class DefiniteAllergenListFragment extends Fragment {
 
         try {
             mCallback = (DefiniteAllergenListFragmentListener) context;
+            Log.i(TAG, "onAttach: Successfully attached callback");
 
         }  catch (ClassCastException e) {
             Log.e(TAG, "onAttach: Must implement DefiniteAllergenListFragmentListener", e);

@@ -17,7 +17,7 @@ import com.example.app.ui.R;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link SuggestedAllergenFragmentInteractionListner}
+ * Activities containing this fragment MUST implement the {@link SuggestedAllergenFragmentInteractionListener}
  * interface.
  */
 public class SuggestedAllergenFragment extends Fragment {
@@ -63,6 +63,7 @@ public class SuggestedAllergenFragment extends Fragment {
 
             mRecyclerView.setAdapter(new SuggestedAllergenRecycleViewAdaptor(TestArrays.mSuggestedAllergenArray, mCallback));
         }
+        Log.i(TAG, "onCreateView: Returning view");
         return view;
     }
 
@@ -72,6 +73,7 @@ public class SuggestedAllergenFragment extends Fragment {
         super.onAttach(context);
         if (context instanceof SuggestedAllergenFragmentInteractionListener) {
             mCallback = (SuggestedAllergenFragmentInteractionListener)context;
+            Log.i(TAG, "onAttach: Successfully attached callback");
         }
         else {
             Log.e(TAG, "onAttach: SuggestedAllergenFragmentInteractionListener not implemented", new ClassCastException());

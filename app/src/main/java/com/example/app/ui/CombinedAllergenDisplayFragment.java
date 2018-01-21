@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.example.app.ui.SuggestedAllergenFragments.SuggestedAllergenFragment;
  * create an instance of this fragment.
  */
 public class CombinedAllergenDisplayFragment extends Fragment  {
+    static final String TAG="combindallergen";
 
 
     public CombinedAllergenDisplayFragment() {
@@ -60,10 +62,14 @@ public class CombinedAllergenDisplayFragment extends Fragment  {
         DefiniteAllergenListFragment d = new DefiniteAllergenListFragment();
         SuggestedAllergenFragment s = new SuggestedAllergenFragment();
 
+        
         ft.replace(R.id.definiteAllergenFragmet, d);
         ft.replace(R.id.suggestedAllergenFragment, s);
 
+        Log.i(TAG, "onCreateView: Committing transaction");
         ft.commit();
+
+        Log.i(TAG, "onCreateView: Transaction committed");
 
         return v;
 

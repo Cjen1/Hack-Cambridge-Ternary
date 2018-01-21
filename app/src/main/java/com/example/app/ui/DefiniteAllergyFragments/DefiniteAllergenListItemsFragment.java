@@ -1,6 +1,7 @@
 package com.example.app.ui.DefiniteAllergyFragments;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class DefiniteAllergenListItemsFragment extends RecyclerView.Adapter<Defi
     private List<String> mValues;
     private DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener mCallback;
 
+
     public DefiniteAllergenListItemsFragment(List<String> values, DefiniteAllergenListFragment.DefiniteAllergenListFragmentListener callback) {
         mValues = values;
         mCallback = callback;
@@ -35,15 +37,6 @@ public class DefiniteAllergenListItemsFragment extends RecyclerView.Adapter<Defi
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.mContentView.setText(mValues.get(position));
-
-        holder.mButton.setOnClickListener(new View.OnClickListener() {
-                                              @Override
-                                              public void onClick(View v) {
-                                                  if (mCallback != null)
-                                                      mCallback.onDefiniteAllergenDelete(position);
-                                              }
-                                          }
-        );
     }
 
     @Override
