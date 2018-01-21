@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class History {
     //todo ensure no synchronisation errors occur here
-    public  LinkedList<Event> events;
+    public  LinkedList<Event> events = new LinkedList<>();
     public Map<String, Double> allergenMap = new HashMap<>();
 
     public void updateAllergenMap(){
@@ -42,7 +42,7 @@ public class History {
                     Event previous = events.get(j);
                     if (previous.type == EventType.EAT) {
                         if (hoursBetween(previous.time, event.time) < 12) {
-                            for (String food : ((EatEvent) event).ingredients) {
+                            for (String food : ((EatEvent) previous).ingredients) {
                                 Double value = workingAllergenMap.get(food);
                                 if (workingAllergenMap.get(food) != 0.5)
                                     workingAllergenMap.put(food, value * 2);
@@ -54,7 +54,7 @@ public class History {
                         double reactionProb = normal.probability(timeDiff - 30, timeDiff + 30);
 
                         double normalising = 0.1;//may need to change.. :)
-                        for(String food : ((EatEvent)event).ingredients){
+                        for(String food : ((EatEvent)previous).ingredients){
                             double prob = workingAllergenMap.containsKey(food) ? workingAllergenMap.get(food) : 0.5;
                             workingAllergenMap.put(food, clamp(reactionProb * prob / normalising));
                         }
