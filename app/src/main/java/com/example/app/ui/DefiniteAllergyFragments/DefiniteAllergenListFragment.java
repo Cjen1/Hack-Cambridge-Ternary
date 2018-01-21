@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.example.app.ui.R;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -51,10 +50,8 @@ public class DefiniteAllergenListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        Log.i(TAG, "onCreateView: Creating view");
-        View view = inflater.inflate(R.layout.fragment_definiteallergenfragment_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_definite_allergen_fragment_list, container, false);
 
-        Log.i(TAG, "onCreateView: Getting instance state arraylist");
 
         // Set the adapter
         if (view instanceof RecyclerView) {

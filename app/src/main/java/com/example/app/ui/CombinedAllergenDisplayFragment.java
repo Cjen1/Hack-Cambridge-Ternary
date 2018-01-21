@@ -29,8 +29,8 @@ public class CombinedAllergenDisplayFragment extends Fragment {
     private SuggestedAllergenFragment mSuggestedFragment;
 
     public CombinedAllergenDisplayFragment() {
-        mDefiniteFragment = new DefiniteAllergenListFragment();
         mSuggestedFragment = new SuggestedAllergenFragment();
+        mDefiniteFragment = new DefiniteAllergenListFragment();
     }
 
     /**
@@ -42,6 +42,7 @@ public class CombinedAllergenDisplayFragment extends Fragment {
      */
     public static CombinedAllergenDisplayFragment newInstance() {
         CombinedAllergenDisplayFragment fragment = new CombinedAllergenDisplayFragment();
+
 
         return fragment;
     }

@@ -48,7 +48,7 @@ public class SuggestedAllergenFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         Log.i(TAG, "onCreateView: Creating View");
-        View view = inflater.inflate(R.layout.fragment_definiteallergenfragment_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_suggested_allergen_item_list, container, false);
 
 
         // Set the adapter

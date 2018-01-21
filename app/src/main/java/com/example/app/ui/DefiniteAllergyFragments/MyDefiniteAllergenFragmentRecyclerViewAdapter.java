@@ -29,7 +29,7 @@ public class MyDefiniteAllergenFragmentRecyclerViewAdapter extends RecyclerView.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_definiteallergenfragment, parent, false);
+                .inflate(R.layout.fragment_definite_allergen_fragment_item, parent, false);
         return new ViewHolder(view);
     }
 

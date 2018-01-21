@@ -1,7 +1,7 @@
 package com.example.app.ui.SuggestedAllergenFragments;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,29 +25,28 @@ public class SuggestedAllergenRecycleViewAdaptor extends RecyclerView.Adapter<Su
     private List<SuggestedAllergen> mValues = new ArrayList<SuggestedAllergen>();
 
     public SuggestedAllergenRecycleViewAdaptor() {
-        Log.i("", "SuggestedAllergenRecycleViewAdaptor: Adding suggested allergen foo");
-        mValues.add(new SuggestedAllergen("foo", 0.7));
-        Log.i("", "SuggestedAllergenRecycleViewAdaptor: Added suggested allergen");
+        mValues.add(new SuggestedAllergen("foo", 0.5));
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
-        Log.i("", "onCreateViewHolder: Wrangling ViewHolder");
+                .inflate(R.layout.fragment_suggested_allergen_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        Log.i("", "onBindViewHolder: Binding view holder");
         holder.mItem = mValues.get(position);
         holder.mAllergenView.setText(mValues.get(position).allergen);
 
-        int redness = (int)(256 * (1.0 - holder.mItem.rating));
-        int greenness = (int)(256 * holder.mItem.rating);
+        int redness = (int)((double)0xFF * (1.0 - holder.mItem.rating));
+        int greenness = (int)((double)0xFF * holder.mItem.rating);
+
+        int opacity = 0xFF;
+
         holder.mRatingView.setText("O");
-        holder.mRatingView.setTextColor(redness << 16 + greenness << 8);
+        holder.mRatingView.setTextColor(Color.argb(opacity, redness, greenness, 0));
 
 /*
         holder.mButton.setOnClickListener(new View.OnClickListener() {
